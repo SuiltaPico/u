@@ -18,6 +18,10 @@ export const raw_pages: RawPage[] = [
       },
     ],
   },
+  {
+    name: "文件浏览",
+    path: "view_file"
+  }
 ];
 
 export const pages: Page[] = raw_pages.map((rp) => RawPage_to_Page(rp));

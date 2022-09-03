@@ -9,7 +9,6 @@ const routes: RouteRecordRaw[] = pages.map((p)=>({
 }));
 
 const router = createRouter({
-  
   routes,
   history: createWebHistory("u/"),
 });
