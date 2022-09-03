@@ -9,7 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@lillallol/outline-pdf": "^4.0.0",
     "@quasar/extras": "^1.15.2",
+    "@types/prettier": "^2.7.0",
+    "monaco-editor": "^0.34.0",
+    "pdf-lib": "^1.17.1",
+    "pinia": "^2.0.21",
+    "prettier": "^2.7.1",
+    "pug": "^3.0.2",
     "quasar": "^2.7.7",
     "vue": "^3.2.37",
     "vue-router": "^4.1.5"
