@@ -1,8 +1,10 @@
-import { createRouter, createRouterMatcher, RouteRecordRaw } from "vue-router";
+import { createRouter, RouteRecordRaw, createWebHistory } from "vue-router";
 
-const routes: RouteRecordRaw[] = []
+const routes: RouteRecordRaw[] = [];
 
-createRouter({
-    routes,
-    history
-})
+const router = createRouter({
+  routes,
+  history: createWebHistory(),
+});
+
+export default router;
