@@ -9,8 +9,9 @@ const routes: RouteRecordRaw[] = pages.map((p)=>({
 }));
 
 const router = createRouter({
+  
   routes,
-  history: createWebHistory(),
+  history: createWebHistory("u/"),
 });
 
 export default router;

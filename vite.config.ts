@@ -8,6 +8,7 @@ import tailwindcss from "tailwindcss";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "u/",
   plugins: [
     vue({ template: { transformAssetUrls } }),
     quasar({

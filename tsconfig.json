@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "u/",
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
