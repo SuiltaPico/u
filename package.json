@@ -12,6 +12,8 @@
     "@lillallol/outline-pdf": "^4.0.0",
     "@quasar/extras": "^1.15.2",
     "@types/prettier": "^2.7.0",
+    "katex": "^0.16.2",
+    "mathjs": "^11.2.1",
     "monaco-editor": "^0.34.0",
     "pdf-lib": "^1.17.1",
     "pinia": "^2.0.21",
@@ -23,6 +25,7 @@
   },
   "devDependencies": {
     "@quasar/vite-plugin": "^1.1.1",
+    "@types/katex": "^0.14.0",
     "@vitejs/plugin-vue": "^3.0.3",
     "autoprefixer": "^10.4.8",
     "postcss": "^8.4.16",
