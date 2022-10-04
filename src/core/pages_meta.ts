@@ -21,6 +21,11 @@ export const raw_pages: RawPage[] = [
     name: "矩阵工具",
     path: "matrix_tools",
     tags: ["数学"],
+  },
+  {
+    name: "改变采样率",
+    path: "change_sample_rate",
+    tags: ["音频"],
   }
 ];
 

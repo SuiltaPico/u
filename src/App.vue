@@ -3,7 +3,7 @@ import use_main_store from "./store/main_store";
 import PageContainer from "./components/PageContainer.vue";
 import Header from "./components/Header.vue";
 import LeftBar from "./components/LeftBar.vue";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 
 const main_store = use_main_store();
 </script>
@@ -12,7 +12,11 @@ const main_store = use_main_store();
 q-layout(view="hHh LpR fFf")
   Header
   
-  PageContainer.px-4
+  PageContainer.px-4.flex.justify-center
+
+  q-inner-loading(:showing="main_store.index_loading")
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>
