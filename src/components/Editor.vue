@@ -16,26 +16,6 @@ self.MonacoEnvironment = {
 };
 
 monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
-
-import prettier from "prettier/standalone";
-import prettier_typescript from "prettier/parser-typescript";
-
-// use prettier to
-monaco.languages.registerDocumentFormattingEditProvider("typescript", {
-  async provideDocumentFormattingEdits(model, options, token) {
-    const result = prettier.format(model.getValue(), {
-      parser: "typescript",
-      plugins: [prettier_typescript],
-    });
-
-    return [
-      {
-        range: model.getFullModelRange(),
-        text: result,
-      },
-    ];
-  },
-});
 </script>
 
 <script setup lang="ts">

@@ -42,6 +42,10 @@ const LPF_types_option = [
 type LPFType = KeyOfArray<typeof LPF_types_option>["value"];
 
 const loading = ref(false);
+const progress_value = ref(0)
+const progress_task_name = ref("")
+const progress_description = ref("")
+
 
 const ffmpeg = createFFmpeg({
   progress: ({ ratio }) => {
@@ -77,7 +81,13 @@ const target_to_original_format = ref(true);
 
 <template lang="pug">
 q-page.flex.flex-col.px-4.py-8.gap-6.w-full.max-w-3xl
-  .flex.flex-col.gap-4 输入
+  .flex.flex-col.gap-4
+    .text-lg 进度
+    div 当前任务：{{ progress_task_name }} {{ progress_description }}
+    q-linear-progress(:value="progress_value")
+
+  .flex.flex-col.gap-4
+    .text-lg 输入
     div
       q-toggle(v-model="using_ffmpeg") 兼容其他格式 （.mp3 等）
         q-tooltip
@@ -89,7 +99,8 @@ q-page.flex.flex-col.px-4.py-8.gap-6.w-full.max-w-3xl
   
     div(v-else)
 
-  .flex.flex-col.gap-4 重采样选项
+  .flex.flex-col.gap-4
+    .text-lg 重采样选项
     .grid.flex-row.gap-x-4.grid-cols-2
       q-input(v-model="target_sample_rate" label="目标采样率" outlined)
         template(#hint v-if="curr_sample_rate !== undefined")
@@ -105,13 +116,13 @@ q-page.flex.flex-col.px-4.py-8.gap-6.w-full.max-w-3xl
       q-select(v-model="target_LPF_type" label="LPF 类型" outlined :disable="!target_using_LPF")
       q-input(v-model="target_LPF_order" label="LPF 阶数" outlined :disable="!target_using_LPF")
 
-  .flex.flex-col.gap-6 生成
+  .flex.flex-col.gap-6
+    .text-lg 生成
     .flex.flex-row.gap-2.gap-y-4
       q-btn(label="生成" icon="mdi-swap-horizontal" color="primary" outline)
       q-toggle(v-model="target_to_original_format" label="转换为原格式")
         q-tooltip
           .text-sm 如果关闭，则生成 wav 格式。如果开启，根据原格式的不同可能会导致数据丢失。
-      q-linear-progress
     .flex.flex-row.gap-3.items-center
       audio.grow.rounded(controls)
       q-btn(icon="mdi-download" flat padding=".8rem 1rem")

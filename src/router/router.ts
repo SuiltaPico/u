@@ -11,13 +11,13 @@ const routes: RouteRecordRaw[] = pages.map((p) => ({
 
 const router = createRouter({
   routes,
-  history: createWebHistory("u/"),
+  history: createWebHistory(GLOBAL_env_no_base ? undefined : "u/"),
 });
 
 router.beforeEach((to, from) => {
   const main_store = use_main_store();
   main_store.set_index_loading(true);
-  document.title = to.name?.toString() ?? ""
+  document.title = to.name?.toString() ?? "";
 });
 
 router.afterEach((to, from) => {
