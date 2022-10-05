@@ -17,7 +17,12 @@ const store = defineStore("change_sample_rate", () => {
 })();
 
 watch(store, () => {
-  localStorage.setItem(store.$id, JSON.stringify(store));
+  localStorage.setItem(
+    store.$id,
+    JSON.stringify(store, (key, value) => {
+      return key.match(/^(\$|\_)/) ? undefined : value;
+    })
+  );
 });
 
 if (localStorage.getItem(store.$id)) {
