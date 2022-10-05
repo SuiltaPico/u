@@ -116,7 +116,8 @@ function change_using_ffmpeg(value: boolean) {
       .then(() => {
         ffmpeg_loaded.value = true;
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error(err);
         using_ffmpeg.value = false;
       })
       .finally(() => {
