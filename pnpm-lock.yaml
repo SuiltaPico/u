@@ -31,6 +31,7 @@ specifiers:
   vue: ^3.2.37
   vue-router: ^4.1.5
   vue-tsc: ^0.39.5
+  wavefile: ^11.0.0
 
 dependencies:
   '@ffmpeg/core': 0.11.0
@@ -50,6 +51,7 @@ dependencies:
   quasar: 2.7.7
   vue: 3.2.38
   vue-router: 4.1.5_vue@3.2.38
+  wavefile: 11.0.0
 
 devDependencies:
   '@quasar/vite-plugin': 1.1.1_ypwirnofg5ymml35wcnealqhda
@@ -1675,6 +1677,12 @@ packages:
       '@vue/runtime-dom': 3.2.38
       '@vue/server-renderer': 3.2.38_vue@3.2.38
       '@vue/shared': 3.2.38
+
+  /wavefile/11.0.0:
+    resolution: {integrity: sha512-/OBiAALgWU24IG7sC84cDO/KfFuvajWc5Uec0oV2zrpOOZZDgGdOwHwgEzOrwh8jkubBk7PtZfQBIcI1OaE5Ng==}
+    engines: {node: '>=8'}
+    hasBin: true
+    dev: false
 
   /webidl-conversions/3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}

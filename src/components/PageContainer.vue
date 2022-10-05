@@ -1,4 +1,4 @@
 <template lang="pug">
 q-page-container
-    router-view
+  router-view
 </template>

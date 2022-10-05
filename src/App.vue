@@ -17,6 +17,8 @@ q-layout(view="hHh LpR fFf")
   q-inner-loading(:showing="main_store.index_loading")
 </template>
 
-<style scoped>
-
+<style>
+html, body, #app {
+  width: 100%;
+}
 </style>
