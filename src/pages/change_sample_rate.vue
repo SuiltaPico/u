@@ -64,6 +64,7 @@ const store = defineStore("change_sample_rate", () => {
     target_keep_original_format: true,
     target_convert_to_high_bit_depth: false,
     target_keep_high_bit_depth: false,
+    original_file_perview: false,
   });
   return result;
 })();
@@ -176,6 +177,11 @@ async function update_wav_file(f?: File) {
 
   wav_file.value = new_wav_file;
 
+  const { url, revoke } = create_object_url([new_wav_file.toBuffer()]);
+  original_file_url.value = url;
+  original_file_url_revoke.value ? original_file_url_revoke.value() : undefined;
+  original_file_url_revoke.value = revoke;
+
   progress_task_name.value = "";
   progress_value.value = 1;
 }
@@ -204,6 +210,12 @@ async function update_ffmpeg_file(f?: File) {
     }
     curr_sample_rate.value = (new_wav_file.fmt as any).sampleRate;
     wav_file.value = new_wav_file;
+    const { url, revoke } = create_object_url([new_wav_file.toBuffer()]);
+    original_file_url.value = url;
+    original_file_url_revoke.value
+      ? original_file_url_revoke.value()
+      : undefined;
+    original_file_url_revoke.value = revoke;
   } catch (err) {
     show_warning_dialog(
       "发生了错误",
@@ -246,7 +258,12 @@ const target_keep_high_bit_depth = new StorePropertyRef(
 
 const result_url = ref("");
 const result_url_revoke = ref<(() => void) | undefined>();
-
+const original_file_perview = new StorePropertyRef(
+  store,
+  "original_file_perview"
+).ref();
+const original_file_url = ref("");
+const original_file_url_revoke = ref<(() => void) | undefined>();
 function generate() {
   const wf = wav_file.value;
   if (!wf) return;
@@ -417,9 +434,14 @@ q-page(class="px-2 py-4 sm:px-4 sm:py-8").flex.flex-col.gap-6.w-full.max-w-3xl
       q-toggle(v-model="target_keep_original_format" label="转换回原格式" v-if="using_ffmpeg")
         q-tooltip(:hide-delay="650" max-width="20rem")
           .text-sm 如果关闭，则生成 wav 格式。如果开启，根据原格式的不同可能会导致数据丢失。
+      q-toggle(v-model="original_file_perview" label="原文件预览")
     .flex.flex-row.gap-3.items-center(v-if="target_convert_to_high_bit_depth && target_keep_high_bit_depth")
       q-icon(name="mdi-alert" size="1.2rem") 
       div 浏览器可能无法支持高精度的预览，如果播放器没有结果请直接下载。
+    .flex.flex-row.gap-3.items-center(v-if="original_file_perview")
+      div 原文件：
+        q-tooltip(v-if="using_ffmpeg") 这里是原文件转换为wav后的文件
+      audio.grow.rounded(controls :src="original_file_url")
     .flex.flex-row.gap-3.items-center
       q-btn(icon="mdi-download" flat padding=".8rem 1rem" @click="download" :disable="result_url.length === 0")
         q-tooltip 下载
