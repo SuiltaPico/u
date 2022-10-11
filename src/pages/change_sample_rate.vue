@@ -169,7 +169,7 @@ async function update_wav_file(f?: File) {
   curr_bit_depth.value = new_wav_file.bitDepth;
 
   if (target_convert_to_high_bit_depth.value) {
-    new_wav_file.toBitDepth("64");
+    new_wav_file.toBitDepth("32f");
   }
 
   curr_sample_rate.value = (new_wav_file.fmt as any).sampleRate;
@@ -200,7 +200,7 @@ async function update_ffmpeg_file(f?: File) {
     curr_bit_depth.value = new_wav_file.bitDepth;
 
     if (target_convert_to_high_bit_depth.value) {
-      new_wav_file.toBitDepth("64");
+      new_wav_file.toBitDepth("32f");
     }
     curr_sample_rate.value = (new_wav_file.fmt as any).sampleRate;
     wav_file.value = new_wav_file;
@@ -384,7 +384,7 @@ q-page(class="px-2 py-4 sm:px-4 sm:py-8").flex.flex-col.gap-6.w-full.max-w-3xl
   .flex.flex-col.gap-4
     .text-lg 重采样选项
     .flex.flex-row.gap-4.flex-wrap
-      q-toggle.min-w-4(v-model="target_convert_to_high_bit_depth") 重采样时转换为高(64f)位深度
+      q-toggle.min-w-4(v-model="target_convert_to_high_bit_depth") 重采样时转换为高(32f)位深度
         q-tooltip
           div 会影响性能。
       q-toggle.min-w-4(v-model="target_keep_high_bit_depth" :disable="!target_convert_to_high_bit_depth") 保留高位深度
