@@ -127,7 +127,7 @@ ffmpeg.setLogger((log) => {
 const loading_ffmpeg = ref(false);
 const ffmpeg_loaded = ref(false);
 
-const using_ffmpeg = new StorePropertyRef(store, "using_ffmpeg");
+const using_ffmpeg = new StorePropertyRef(store, "using_ffmpeg").ref();
 change_using_ffmpeg(using_ffmpeg.value);
 function change_using_ffmpeg(value: boolean) {
   using_ffmpeg.value = value;
@@ -219,27 +219,30 @@ const wav_file = ref<WaveFile | undefined>();
 const curr_sample_rate = ref<number | undefined>();
 const curr_bit_depth = ref<string>("");
 
-const target_sample_rate = new StorePropertyRef(store, "target_sample_rate");
+const target_sample_rate = new StorePropertyRef(
+  store,
+  "target_sample_rate"
+).ref();
 const target_resampling_methods = new StorePropertyRef(
   store,
   "target_resampling_methods"
-);
-const target_using_LPF = new StorePropertyRef(store, "target_using_LPF");
-const target_LPF_type = new StorePropertyRef(store, "target_LPF_type");
-const target_LPF_order = new StorePropertyRef(store, "target_LPF_order");
+).ref();
+const target_using_LPF = new StorePropertyRef(store, "target_using_LPF").ref();
+const target_LPF_type = new StorePropertyRef(store, "target_LPF_type").ref();
+const target_LPF_order = new StorePropertyRef(store, "target_LPF_order").ref();
 const target_keep_original_format = new StorePropertyRef(
   store,
   "target_keep_original_format"
-);
+).ref();
 
 const target_convert_to_high_bit_depth = new StorePropertyRef(
   store,
   "target_convert_to_high_bit_depth"
-);
+).ref();
 const target_keep_high_bit_depth = new StorePropertyRef(
   store,
   "target_keep_high_bit_depth"
-);
+).ref();
 
 const result_url = ref("");
 const result_url_revoke = ref<(() => void) | undefined>();
