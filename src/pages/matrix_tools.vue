@@ -690,7 +690,7 @@ function process_ASTNode(ast_node: ASTNode, steps: Operation[]) {
           ValueType_to_operation(result),
           {
             type: "string",
-            value: "\\qquad"
+            value: "\\qquad",
           }
         );
       const op_map: Record<
@@ -763,7 +763,7 @@ const exp_steps = computed(() => {
   try {
     const result: ASTNode = Parser.parse(exp_raw.value, {});
     const steps: Operation[] = [];
-    process_ASTNode(result, steps);
+    result ? process_ASTNode(result, steps) : undefined;
     return steps;
   } catch (e) {
     console.log(e);

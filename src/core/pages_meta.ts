@@ -26,7 +26,7 @@ export const raw_pages: RawPage[] = [
     name: "改变采样率",
     path: "change_sample_rate",
     tags: ["音频"],
-  }
+  },
 ];
 
 export const pages: Page[] = raw_pages.map((rp) => RawPage_to_Page(rp));

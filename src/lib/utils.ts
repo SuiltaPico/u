@@ -16,3 +16,11 @@ export function download_url(url: string, file_name?: string) {
   a.click()
   a.remove()
 }
+
+export function any(v: any){
+  return v as any
+}
+
+export function as<T>(v: any){
+  return v as T
+}

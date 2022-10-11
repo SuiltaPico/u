@@ -21,6 +21,13 @@ monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 
+const props = withDefaults(defineProps<{
+  init_theme?: string,
+  init_language?: string,
+}>(), {
+  init_theme: "vs-dark",
+  init_language: ""
+})
 const emits = defineEmits<{
   (event: "update:content", value: string): void;
 }>();
@@ -30,8 +37,8 @@ let editor: undefined | monaco.editor.IStandaloneCodeEditor;
 
 onMounted(() => {
   editor = monaco.editor.create(editor_container_ref.value!, {
-    language: "",
-    theme: "vs-dark",
+    language: props.init_language,
+    theme: props.init_theme,
     automaticLayout: true,
   });
   editor.onDidChangeModelContent((e) => {
@@ -59,6 +66,9 @@ defineExpose({
     }
     monaco.editor.setModelLanguage(model, value);
   },
+  change_theme(value: string){
+    
+  }
 });
 </script>
 
