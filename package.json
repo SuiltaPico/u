@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@box2d/core": "^0.10.0",
     "@ffmpeg/core": "^0.11.0",
     "@ffmpeg/ffmpeg": "^0.11.5",
     "@lillallol/outline-pdf": "^4.0.0",
@@ -19,6 +20,7 @@
     "mathjs": "^11.2.1",
     "monaco-editor": "^0.34.0",
     "nanoid": "^4.0.0",
+    "p5": "^1.4.2",
     "pdf-lib": "^1.17.1",
     "peggy": "^2.0.1",
     "pinia": "^2.0.21",
@@ -32,7 +34,8 @@
   "devDependencies": {
     "@quasar/vite-plugin": "^1.1.1",
     "@types/katex": "^0.14.0",
-    "@types/node": "^18.8.2",
+    "@types/node": "^18.11.1",
+    "@types/p5": "^1.4.3",
     "@vitejs/plugin-vue": "^3.0.3",
     "autoprefixer": "^10.4.8",
     "postcss": "^8.4.16",

@@ -1,13 +1,15 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@box2d/core': ^0.10.0
   '@ffmpeg/core': ^0.11.0
   '@ffmpeg/ffmpeg': ^0.11.5
   '@lillallol/outline-pdf': ^4.0.0
   '@quasar/extras': ^1.15.2
   '@quasar/vite-plugin': ^1.1.1
   '@types/katex': ^0.14.0
-  '@types/node': ^18.8.2
+  '@types/node': ^18.11.1
+  '@types/p5': ^1.4.3
   '@types/prettier': ^2.7.0
   '@vitejs/plugin-vue': ^3.0.3
   autoprefixer: ^10.4.8
@@ -15,6 +17,7 @@ specifiers:
   mathjs: ^11.2.1
   monaco-editor: ^0.34.0
   nanoid: ^4.0.0
+  p5: ^1.4.2
   pdf-lib: ^1.17.1
   peggy: ^2.0.1
   pinia: ^2.0.21
@@ -34,6 +37,7 @@ specifiers:
   wavefile: ^11.0.0
 
 dependencies:
+  '@box2d/core': 0.10.0
   '@ffmpeg/core': 0.11.0
   '@ffmpeg/ffmpeg': 0.11.5
   '@lillallol/outline-pdf': 4.0.0
@@ -43,6 +47,7 @@ dependencies:
   mathjs: 11.2.1
   monaco-editor: 0.34.0
   nanoid: 4.0.0
+  p5: 1.4.2
   pdf-lib: 1.17.1
   peggy: 2.0.1
   pinia: 2.0.21_pj7ch6rmow6odq73xb5hfvge3q
@@ -56,7 +61,8 @@ dependencies:
 devDependencies:
   '@quasar/vite-plugin': 1.1.1_ypwirnofg5ymml35wcnealqhda
   '@types/katex': 0.14.0
-  '@types/node': 18.8.2
+  '@types/node': 18.11.1
+  '@types/p5': 1.4.3
   '@vitejs/plugin-vue': 3.0.3_vite@3.0.9+vue@3.2.38
   autoprefixer: 10.4.8_postcss@8.4.16
   postcss: 8.4.16
@@ -99,6 +105,10 @@ packages:
       '@babel/helper-string-parser': 7.18.10
       '@babel/helper-validator-identifier': 7.18.6
       to-fast-properties: 2.0.0
+
+  /@box2d/core/0.10.0:
+    resolution: {integrity: sha512-rVawB+VokPnE2IarLPXE9blbpV26KOEYdadsnXf7ToyXzceXMADPrSIvYIyTzXLteiLE9i+UTMmTcCvYXl+QEA==}
+    dev: false
 
   /@esbuild/linux-loong64/0.14.54:
     resolution: {integrity: sha512-bZBrLAIX1kpWelV0XemxBZllyRmM6vgFQQG2GdNb+r3Fkp0FOh1NJSvekXDs7jq70k4euu1cryLMfU+mTXlEpw==}
@@ -306,8 +316,12 @@ packages:
     resolution: {integrity: sha512-+2FW2CcT0K3P+JMR8YG846bmDwplKUTsWgT2ENwdQ1UdVfRk3GQrh6Mi4sTopy30gI8Uau5CEqHTDZ6YvWIUPA==}
     dev: true
 
-  /@types/node/18.8.2:
-    resolution: {integrity: sha512-cRMwIgdDN43GO4xMWAfJAecYn8wV4JbsOGHNfNUIDiuYkUYAR5ec4Rj7IO2SAhFPEfpPtLtUTbbny/TCT7aDwA==}
+  /@types/node/18.11.1:
+    resolution: {integrity: sha512-bB9ptqoW+pKBjs0kJX/zUSUWCOWAyYXQsOgY6+HIEbnjYike3CAeDhxlQ4kDjCm/S9SRV66F49HY7gwJz0oWMg==}
+    dev: true
+
+  /@types/p5/1.4.3:
+    resolution: {integrity: sha512-UjgBi1/VU0Dz1/JxzRZrDKlC54rMELWW+6oHx1pRKzKkVgwzvP+dEjZ1JbeMjK12VJMUjDx4lhGUmnUL2jBASQ==}
     dev: true
 
   /@types/prettier/2.7.0:
@@ -1162,6 +1176,10 @@ packages:
     dependencies:
       wrappy: 1.0.2
     dev: true
+
+  /p5/1.4.2:
+    resolution: {integrity: sha512-J5zqZ/l1NIbJSuNr/FH9nDYgBRg7/NubStNPnx1fQCMSAgxI6peKDHs9i5iaG9EuwbJzjuG6/5bX/D0lqqrP9A==}
+    dev: false
 
   /pako/1.0.11:
     resolution: {integrity: sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==}

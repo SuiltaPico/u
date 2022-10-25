@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.q-field--filled > .q-field__inner > .q-field__control {
+  background: none;
+}
+
+.q-field--filled.q-field--highlighted > .q-field__inner > .q-field__control:before{
+  opacity: 0;
+}
+
+.q-field--filled .q-field__control::before {
+}
+.q-field--filled .q-field__control:hover::before {
+  @apply opacity-50
+}

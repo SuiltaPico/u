@@ -11,22 +11,31 @@ export const raw_pages: RawPage[] = [
   {
     name: "PDF 大纲制作",
     path: "pdf_outline_maker",
-    tags: ["pdf"],
+    description: "重新制作 PDF 文件的目录。",
+    tags: ["PDF"],
   },
   {
     name: "文件浏览",
     path: "view_file",
+    description: "方便手机用户预览一些文件。",
   },
   {
     name: "矩阵工具",
     path: "matrix_tools",
+    description: "临时的。",
     tags: ["数学"],
   },
   {
     name: "改变采样率",
     path: "change_sample_rate",
+    description: "支持多种算法重新改变音频文件的采样率。",
     tags: ["音频"],
-  },
+  },/** 
+  {
+    name: "Color Box Festival",
+    path: "color_box_festival",
+    tags: ["横版游戏"]
+  }*/
 ];
 
 export const pages: Page[] = raw_pages.map((rp) => RawPage_to_Page(rp));

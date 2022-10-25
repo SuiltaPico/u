@@ -16,13 +16,13 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
   const main_store = use_main_store();
-  main_store.set_index_loading(true);
-  document.title = to.name?.toString() ?? "";
+  main_store.toggle_framwork_loading(true);
+  main_store.set_title(to.name?.toString()?? "")
 });
 
 router.afterEach((to, from) => {
   const main_store = use_main_store();
-  main_store.set_index_loading(false);
+  main_store.toggle_framwork_loading(false);
 });
 
 export default router;

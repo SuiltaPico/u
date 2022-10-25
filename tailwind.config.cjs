@@ -1,12 +1,26 @@
+const colors = require('tailwindcss/colors')
+
+function color_to_int(color) {
+  return parseInt(color.slice(1), 16)
+}
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{html,vue}"],
   theme: {
-    minWidth: {
-      '4': '1rem',
-      "full": "100%"
+    extend: {
+      minWidth: {
+        '4': '1rem',
+        "full": "100%"
+      },
+      colors: {
+        zinc: {
+          150: "#" + ((
+            color_to_int(colors.zinc[100]) + color_to_int(colors.zinc[200])
+          ) / 2).toString(16)
+        }
+      }
     },
-    extend: {},
   },
   plugins: [],
 }

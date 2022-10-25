@@ -345,6 +345,7 @@ function find_pivot_row_index(matrix: Matrix, col: number) {
   let max_index = -1;
   if (mathjs.isMatrix(col_matrix)) {
     col_matrix.forEach((v, i) => {
+      if (max !== 0) return;
       if (mathjs.equal(math.compare(mathjs.abs(v), mathjs.abs(max)), 1)) {
         max = v;
         max_index = (i as any as number[])[0];
@@ -388,6 +389,7 @@ function matrix_eliminate(matrix: Matrix) {
     });
     curr_matrix = curr_matrix.clone();
   }
+
 
   function push_two_row_add_operation(
     src: number,

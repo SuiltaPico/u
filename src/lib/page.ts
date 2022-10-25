@@ -7,11 +7,13 @@ export default interface Page {
   tags: Tag[];
   alias: string[] | string | undefined;
   hide: boolean;
+  description: string;
 }
 
 export interface RawPage {
   name: string;
   path?: string;
+  description?: string;
   compo_path?: string;
   /** 标签 */
   tags?: RawTag | RawTag[];
@@ -35,5 +37,6 @@ export function RawPage_to_Page(rp: RawPage): Page {
     hide: rp.hide ?? false,
     alias: rp.alias,
     tags: raw_tags.map((v) => RawTag_to_Tag(v)),
+    description: rp.description ?? "",
   };
 }

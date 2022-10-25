@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createFFmpeg } from "@ffmpeg/ffmpeg";
-import { onMounted, reactive, ref, watch } from "vue";
+import { onMounted, reactive, ref, toRef, watch } from "vue";
 import type { Ref } from "vue";
 import { WaveFile } from "wavefile";
 import { defineStore } from "pinia";
@@ -8,6 +8,7 @@ import { defineStore } from "pinia";
 import type { KeyOfArray } from "../lib/types";
 import { create_object_url, download_url, as } from "../lib/utils";
 import StorePropertyRef from "../lib/store_property_ref";
+import Card from "../components/Card.vue";
 
 const resampling_methods_options = [
   {
@@ -52,19 +53,23 @@ const LPF_types_options = [
 
 type LPFType = KeyOfArray<typeof LPF_types_options>;
 
+const default_store_options = {
+  using_ffmpeg: false,
+  using_no_cdn_ffmpeg: false,
+  target_sample_rate: 44100,
+  target_resampling_methods: resampling_methods_options[2] as ResamplingMethod,
+  target_using_LPF: false,
+  target_LPF_type: LPF_types_options[1] as LPFType,
+  target_LPF_order: 20,
+  target_keep_original_format: true,
+  target_convert_to_high_bit_depth: false,
+  target_keep_high_bit_depth: false,
+  original_file_perview: false,
+};
+
 const store = defineStore("change_sample_rate", () => {
   const result = reactive({
-    using_ffmpeg: false,
-    target_sample_rate: 44100,
-    target_resampling_methods:
-      resampling_methods_options[2] as ResamplingMethod,
-    target_using_LPF: false,
-    target_LPF_type: LPF_types_options[1] as LPFType,
-    target_LPF_order: 20,
-    target_keep_original_format: true,
-    target_convert_to_high_bit_depth: false,
-    target_keep_high_bit_depth: false,
-    original_file_perview: false,
+    ...default_store_options,
   });
   return result;
 })();
@@ -77,6 +82,14 @@ watch(store, () => {
     })
   );
 });
+
+function reset_all_options() {
+  localStorage.removeItem(store.$id);
+  Object.entries(default_store_options).forEach(([key, value]) => {
+    /** @ts-ignore */
+    store[key] = value;
+  });
+}
 
 if (localStorage.getItem(store.$id)) {
   Object.entries(JSON.parse(localStorage.getItem(store.$id)!)).forEach(
@@ -143,7 +156,8 @@ function change_using_ffmpeg(value: boolean) {
       .catch((err) => {
         show_warning_dialog(
           "发生了错误",
-          "可能的你的浏览器不支持ffmpeg.wasm。具体报错信息如下：" + String(err)
+          "可能是网络错误，或者是你的浏览器不支持 ffmpeg.wasm。具体报错信息如下：" +
+            String(err)
         );
         using_ffmpeg.value = false;
       })
@@ -231,37 +245,30 @@ const wav_file = ref<WaveFile | undefined>();
 const curr_sample_rate = ref<number | undefined>();
 const curr_bit_depth = ref<string>("");
 
-const target_sample_rate = new StorePropertyRef(
-  store,
-  "target_sample_rate"
-).ref();
-const target_resampling_methods = new StorePropertyRef(
-  store,
-  "target_resampling_methods"
-).ref();
-const target_using_LPF = new StorePropertyRef(store, "target_using_LPF").ref();
-const target_LPF_type = new StorePropertyRef(store, "target_LPF_type").ref();
-const target_LPF_order = new StorePropertyRef(store, "target_LPF_order").ref();
-const target_keep_original_format = new StorePropertyRef(
-  store,
-  "target_keep_original_format"
-).ref();
+const using_no_cdn_ffmpeg = toRef(store, "using_no_cdn_ffmpeg");
 
-const target_convert_to_high_bit_depth = new StorePropertyRef(
+const target_sample_rate = toRef(store, "target_sample_rate");
+const target_resampling_methods = toRef(store, "target_resampling_methods");
+const target_using_LPF = toRef(store, "target_using_LPF");
+const target_LPF_type = toRef(store, "target_LPF_type");
+const target_LPF_order = toRef(store, "target_LPF_order");
+const target_keep_original_format = toRef(store, "target_keep_original_format");
+
+const target_convert_to_high_bit_depth = toRef(
   store,
   "target_convert_to_high_bit_depth"
-).ref();
-const target_keep_high_bit_depth = new StorePropertyRef(
+);
+const target_keep_high_bit_depth = toRef(
   store,
   "target_keep_high_bit_depth"
-).ref();
+);
 
 const result_url = ref("");
 const result_url_revoke = ref<(() => void) | undefined>();
-const original_file_perview = new StorePropertyRef(
+const original_file_perview = toRef(
   store,
   "original_file_perview"
-).ref();
+);
 const original_file_url = ref("");
 const original_file_url_revoke = ref<(() => void) | undefined>();
 function generate() {
@@ -364,26 +371,24 @@ function show_warning_dialog(title: string, content: string) {
 
 <template lang="pug">
 q-page(class="px-2 py-4 sm:px-4 sm:py-8").flex.flex-col.gap-6.w-full.max-w-3xl
-  .flex.flex-col.gap-4
+  .flex.flex-col.gap-4(v-if="ffmpeg_loaded")
     .text-lg#progress-bar 进度
-    //div 当前任务：{{ progress_task_name }}
     q-linear-progress(:value="progress_value" animation-speed="200")
 
   .flex.flex-col.gap-4
     .text-lg 输入
     .flex.flex-row.gap-4
       q-toggle(:model-value="using_ffmpeg" @update:model-value="change_using_ffmpeg($event)") 兼容其他格式 （.mp3 等）
-        q-tooltip(v-if="!using_ffmpeg" :hide-delay="650" max-width="20rem")
-          .text-sm
-            q-icon.pr-2(name="mdi-alert")
-            | 如果启用该选项，将在您的浏览器中加载 ffmpeg.wasm，大约消耗 
-            span.text-blue-300 8~24MB
-            |  的流量。
+        q-tooltip.text-sm(v-if="!using_ffmpeg" :hide-delay="650" max-width="20rem")
+          q-icon.pr-2(name="mdi-alert")
+          | 如果启用该选项，将在您的浏览器中加载 ffmpeg.wasm，大约消耗 
+          span.text-blue-300 8~24MB
+          |  的流量。
       .flex.flex-row.items-center.gap-2.flex-auto(v-if="loading_ffmpeg")
-        q-spinner
+        q-spinner(color="primary")
         div 正在加载 ffmpeg.wasm ...
       q-space
-      q-btn(icon="mdi-console" flat color="accent"
+      q-btn(icon="mdi-console" flat color="secondary"
         @click="ffmpeg_log_dialog_showing = true" v-if="using_ffmpeg"
         )
         q-tooltip(:hide-delay="650") ffmpeg.wasm 调试日志
@@ -402,10 +407,10 @@ q-page(class="px-2 py-4 sm:px-4 sm:py-8").flex.flex-col.gap-6.w-full.max-w-3xl
     .text-lg 重采样选项
     .flex.flex-row.gap-4.flex-wrap
       q-toggle.min-w-4(v-model="target_convert_to_high_bit_depth") 重采样时转换为高(32f)位深度
-        q-tooltip
-          div 会影响性能。
+        q-tooltip.text-sm(max-width="20rem")
+          div 在文件读取完成后会进行重采样，可能会发生卡顿。如果未开启“保留高位深度”选项，在下载之前也会发生卡顿现象。
       q-toggle.min-w-4(v-model="target_keep_high_bit_depth" :disable="!target_convert_to_high_bit_depth") 保留高位深度
-        q-tooltip
+        q-tooltip.text-sm
             div 关闭会阻止转换回原位深度，使结果生成地更快一些。
     .flex.flex-row.gap-4.flex-wrap
       q-input.flex-auto(v-model="target_sample_rate" label="目标采样率" outlined :bottom-slots="!!curr_sample_rate")
@@ -454,7 +459,7 @@ q-page(class="px-2 py-4 sm:px-4 sm:py-8").flex.flex-col.gap-6.w-full.max-w-3xl
   q-dialog(v-model="ffmpeg_log_dialog_showing")
     q-card.overflow-hidden(style="min-width: 20rem; max-width: 80vw;")
       q-card-actions.p-4(align="left")
-        q-btn(icon="mdi-broom" color="accent" round flat @click="ffmpeg_logs.splice(0, ffmpeg_logs.length)")
+        q-btn(icon="mdi-broom" color="primary" round flat @click="ffmpeg_logs.splice(0, ffmpeg_logs.length)")
         //q-btn(icon="mdi-content-copy" round flat @click="")
         q-space
         q-btn(icon="mdi-close" round flat color="negative" @click="ffmpeg_log_dialog_showing = false")
@@ -479,7 +484,12 @@ q-page(class="px-2 py-4 sm:px-4 sm:py-8").flex.flex-col.gap-6.w-full.max-w-3xl
       q-card-actions(align="right")
         q-btn(color="primary" outline @click="warning_dialog_showing = false") 确认
 
-  
+  teleport(to="#left-bar-teleport-anchor")
+    .flex.flex-col.px-4.mt-4
+      Card(@click="reset_all_options()")
+        .flex.flex-row.items-center.gap-2
+          q-icon(name="mdi-restore" size="1.4rem")
+          div 重置当前页面所有设置
 </template>
 <style>
 audio:active,
