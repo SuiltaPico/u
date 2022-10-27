@@ -39,9 +39,10 @@ search_text_observable.pipe(debounceTime(100)).subscribe((value) => {
   search_result.value = search_pages(value);
 });
 
-function update_search_text(value: string) {
-  search_text.value = value;
-  search_text_observable_next(value);
+function update_search_text(value: string | number | null) {
+  const v = value?.toString() ?? ""
+  search_text.value = v;
+  search_text_observable_next(v);
 }
 
 main_store.set_title("");
@@ -55,7 +56,7 @@ q-page.bg-white.flex.flex-col.gap-4.p-8.gap-10.min-w-100.max-w-100(
     .text-3xl.font-serif Sutils 杂物箱
 
   .flex.flex-col.items-center
-    q-input.bg-zinc-100.text-base.grow.w-full(:model-value="search_text" @update:model-value="update_search_text" placeholder="搜索..." 
+    q-input.bg-zinc-100.text-base.grow.w-full(:model-value="search_text" @update:model-value="update_search_text($event)" placeholder="搜索..." 
       filled)
       template(#prepend)
         q-icon(name="mdi-magnify")

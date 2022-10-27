@@ -38,7 +38,7 @@
     "@types/node": "^18.11.1",
     "@types/p5": "^1.4.3",
     "@vitejs/plugin-vue": "^3.0.3",
-    "@volar/vue-language-plugin-pug": "^1.0.9",
+    "@volar/vue-language-plugin-pug": "1.0.0-beta.1",
     "autoprefixer": "^10.4.8",
     "postcss": "^8.4.16",
     "sass": "1.32.12",
