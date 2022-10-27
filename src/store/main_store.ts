@@ -36,7 +36,7 @@ const use_main_store = defineStore("main_store", () => {
     title,
     set_title(value: string) {
       title.value = value;
-      document.title = (value ? value : "未知页面")  + "- Sutils";
+      document.title = (value ? value : "")  + (value ? "- " : "") + "Sutils";
     },
   };
 });

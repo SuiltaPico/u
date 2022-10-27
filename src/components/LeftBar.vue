@@ -14,8 +14,8 @@ q-drawer.cursor-default(
   side="left" bordered
 )
   div.flex.flex-row.py-4.px-4.gap-2
-    q-btn.bg-blue-50.rounded.py-2.grow(color="primary" unelevated icon="mdi-home" to="/" v-if="route.name !== '首页'")
-    q-btn.bg-blue-50.rounded.py-2(color="secondary" unelevated icon="mdi-cog" to="/" v-if="route.name !== '设置'"
+    q-btn.bg-blue-50.rounded.py-2.grow(color="primary" outline icon="mdi-home" to="/" v-if="route.name !== '首页'")
+    q-btn.bg-blue-50.rounded.py-2(color="secondary" outline icon="mdi-cog" to="/settings" v-if="route.name !== '设置'"
     )
 
   .flex.flex-row.justify-center.px-4.mt-2.items-center.gap-2(v-if="route.name !== '首页'")

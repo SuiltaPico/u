@@ -13,14 +13,16 @@ export function RawTag_to_Tag(rt: RawTag): Tag {
   return rt;
 }
 
-export interface TagTreeBranch {
-  type: "branch"
+export interface TagTreeNode {
+  type: "node";
   name: string;
-  children: (TagTreeLeaf | TagTreeBranch)[];
+  children: /**TagTreeLeaf |*/ (TagTreeNode | Page)[];
 }
 
-export interface TagTreeLeaf {
+/** export interface TagTreeLeaf {
   type: "leaf"
   name: string;
   children: Page[];
-}
+} */
+
+export function search() {}

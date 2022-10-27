@@ -1,6 +1,7 @@
 import Tag, { RawTag, RawTag_to_Tag } from "./tag";
 
 export default interface Page {
+  type: "page";
   name: string;
   path: string;
   compo_path: string;
@@ -21,6 +22,7 @@ export interface RawPage {
   alias?: string[] | string;
   /** 隐藏展示 */
   hide?: boolean;
+  no_path_perfix?: boolean;
 }
 
 export function RawPage_to_Page(rp: RawPage): Page {
@@ -32,7 +34,8 @@ export function RawPage_to_Page(rp: RawPage): Page {
     : [];
   return {
     ...rp,
-    path: "/" + path,
+    type: "page",
+    path: (rp.no_path_perfix ? "" : "/") + path,
     compo_path: rp.compo_path ?? path,
     hide: rp.hide ?? false,
     alias: rp.alias,
