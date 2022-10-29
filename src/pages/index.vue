@@ -49,8 +49,8 @@ main_store.set_title("");
 </script>
 
 <template lang="pug">
-q-page.bg-white.flex.flex-col.gap-4.p-8.gap-10.min-w-100.max-w-100(
-  class="md:min-w-75 md:max-w-75 xl:min-w-50 xl:max-w-50"
+q-page.bg-white.flex.flex-col.gap-4.gap-10.min-w-100.max-w-100.px-2.py-8(
+  class="md:min-w-75 md:max-w-75 xl:min-w-50 xl:max-w-50 xl:px-8"
   )
   .flex.flex-col.text-center
     .text-3xl.font-serif Sutils 杂物箱

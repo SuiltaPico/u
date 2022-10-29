@@ -56,10 +56,10 @@ async function write() {
 </script>
 
 <template lang="pug">
-q-page.grid.grid-cols-2
+q-page.grid.grid-cols-2.min-w-100
   q-card
     q-card-section
-      q-file(label="PDF文件" v-model="file" @update:model-value="file_selected" accept=".pdf, *")
+      q-file.bg-zinc-100(label="PDF文件" v-model="file" @update:model-value="file_selected" accept=".pdf, *" filled)
     q-card-section
       | 格式：
       code 页码|层数|标题名

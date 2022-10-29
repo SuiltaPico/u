@@ -11,6 +11,7 @@ module.exports = {
     extend: {
       minWidth: {
         '4': '1rem',
+        '32': '8rem',
         "full": "100%",
         "50": "50%",
         "75": "75%",

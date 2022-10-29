@@ -26,6 +26,6 @@ q-page.bg-white.flex.flex-col.gap-4.p-8.gap-8.min-w-100(
 
 <style>
 li {
-  @apply before:block before:w-1 before:h-4 before:bg-slate-600 flex flex-row items-center text-base gap-2 rounded
+  @apply before:block before:w-1 before:h-4 before:bg-slate-600 flex flex-row items-center text-base gap-2 rounded flex-wrap
 }
 </style>

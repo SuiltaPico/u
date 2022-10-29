@@ -27,4 +27,8 @@ html, body, #app {
 #app {
   @apply bg-white;
 }
+
+.q-focus-helper{
+  outline: none !important;
+}
 </style>

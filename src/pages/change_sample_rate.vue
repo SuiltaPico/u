@@ -120,6 +120,7 @@ const ffmpeg = createFFmpeg({
     console.log("ffmpeg progress", ratio);
   },
 });
+
 // @ts-ignore
 window["ffmpeg"] = ffmpeg;
 ffmpeg.setLogger((log) => {

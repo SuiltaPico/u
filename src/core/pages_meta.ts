@@ -35,6 +35,22 @@ export const raw_pages: RawPage[] = [
     hide: true,
   },
   {
+    name: "设置",
+    path: "settings",
+    hide: true,
+  },
+  {
+    name: "关于",
+    path: "about",
+    hide: true,
+  },
+  {
+    name: "虚拟文件系统管理",
+    path: "vfsmgr/:full_path*",
+    compo_path: "virtual_filesystem_manager",
+    hide: true,
+  },
+  {
     name: "PDF 大纲制作",
     path: "pdf_outline_maker",
     description: "重新制作 PDF 文件的目录。",

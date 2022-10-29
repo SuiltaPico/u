@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { reactive, ref, toRef } from "vue";
+import VirtualFileSystem from "../lib/virtual_fs/VirtualFileSystem";
 
 const use_main_store = defineStore("main_store", () => {
   function toggle_template<
@@ -22,6 +23,8 @@ const use_main_store = defineStore("main_store", () => {
   });
 
   const title = ref("");
+  const virtual_filesystem = ref(new VirtualFileSystem("main_store"))
+  
 
   return {
     left_bar_showing: toRef(framework_showing, "left_bar"),
@@ -38,6 +41,8 @@ const use_main_store = defineStore("main_store", () => {
       title.value = value;
       document.title = (value ? value : "")  + (value ? "- " : "") + "Sutils";
     },
+
+    virtual_filesystem
   };
 });
 
