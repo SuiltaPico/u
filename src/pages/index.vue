@@ -49,7 +49,7 @@ main_store.set_title("");
 </script>
 
 <template lang="pug">
-q-page.bg-white.flex.flex-col.gap-4.gap-10.min-w-100.max-w-100.px-2.py-8(
+q-page.bg-white.flex.flex-col.gap-10.min-w-100.max-w-100.px-1.py-8(
   class="md:min-w-75 md:max-w-75 xl:min-w-50 xl:max-w-50 xl:px-8"
   )
   .flex.flex-col.text-center
@@ -70,16 +70,16 @@ q-page.bg-white.flex.flex-col.gap-4.gap-10.min-w-100.max-w-100.px-2.py-8(
         :render_tag_tree="render_tag_tree" :children_only="true"
         )
     div(v-show="mode === 'list'")
-      .flex.flex-row.gap-4
+      .flex.flex-row.gap-4.justify-center(class="md:justify-start")
         template(v-for="p in pages")
-          IndexFullPageCard(v-if="!p.hide" :page="p")
+          IndexFullPageCard(v-if="!p.hide" :page="p" class="basis-[calc(50%-.5rem)]  md:basis-auto")
 
 
   .flex.flex-col.gap-4(v-if="search_text.length !== 0")
     .text-lg.flex.flex-row.gap-2 搜索结果
     .flex.flex-row.gap-4
       TransitionGroup(name="index__search_result")
-        IndexFullPageCard(v-for="p in search_result" :key="p.name" :page="p")
+        IndexFullPageCard(v-for="p in search_result" :key="p.name" :page="p" class="basis-[calc(50%-1rem)]  md:basis-auto")
   q-space
   div.text-center.text-zinc-50 by Suilta Pico
 </template>

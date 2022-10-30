@@ -85,7 +85,7 @@ export class FileEntry<T extends VirtualFileSystemAcceptableType> {
     this.file_meta.last_modify_time = now;
     this.file_meta.size = value.byteLength;
 
-    await this.fs.fs_meta.setItem(this.full_path, this.file_meta);
+    await this.fs.fs_meta_map.setItem(this.full_path, this.file_meta);
     await this.fs.file_map.setItem(this.full_path, value);
   }
   meta(): FileMeta {
@@ -148,8 +148,10 @@ function parse_path(path: string) {
 export default class VirtualFileSystem {
   fid: string;
   file_map: typeof localforage;
-  fs_meta: typeof localforage;
+  fs_meta_map: typeof localforage;
+  meta: typeof localforage;
   ready: Promise<void>;
+  version = 1;
 
   constructor(fid: string) {
     this.fid = fid;
@@ -157,14 +159,28 @@ export default class VirtualFileSystem {
       name: "fs:" + fid,
       description: `virtual file system ${fid} file map`,
     });
-    this.fs_meta = createInstance({
-      name: "meta:" + fid,
+    this.fs_meta_map = createInstance({
+      name: "meta_map:" + fid,
       description: `virtual file system ${fid} file meta map`,
     });
-    this.ready = this.file_map.ready().then(async () => {
-      if (!(await this.fs_meta.getItem(""))) {
-        this.fs_meta.setItem("", create_DirectoryMeta(""));
+    this.meta = createInstance({
+      name: "meta:" + fid,
+      description: `virtual file system ${fid} version`,
+    });
+    this.ready = Promise.all([
+      this.fs_meta_map.ready(),
+      this.file_map.ready(),
+      this.meta.ready(),
+    ]).then(async () => {
+      const version: number | null = await this.meta.getItem("version");
+      if (version === this.version) return;
+      if (version === null) {
+        // 文件系统未安装
+        await this.fs_meta_map.setItem("", create_DirectoryMeta(""));
+        await this.meta.setItem("version", version);
+        return;
       }
+      // 升级代码...
     });
   }
 
@@ -174,7 +190,7 @@ export default class VirtualFileSystem {
   ) {
     const { parent_path, name, require_dir, full_path } = parse_path(path);
 
-    let meta: VirtualFileSystemMeta | null = await this.fs_meta.getItem(
+    let meta: VirtualFileSystemMeta | null = await this.fs_meta_map.getItem(
       full_path
     );
     if (require_dir)
@@ -185,9 +201,8 @@ export default class VirtualFileSystem {
     if (!create && !meta)
       throw new Error(`VirtualFileSystemError PathNotExist[${path}]`);
     else if (create) {
-      const parent: VirtualFileSystemMeta | null = await this.fs_meta.getItem(
-        parent_path ?? ""
-      );
+      const parent: VirtualFileSystemMeta | null =
+        await this.fs_meta_map.getItem(parent_path ?? "");
       if (!parent)
         throw new Error(
           `VirtualFileSystemError DirNotExist[${parent_path}]: The directory already exists when trying to create the directory`
@@ -199,8 +214,8 @@ export default class VirtualFileSystem {
       parent.files.push(full_path);
 
       meta = create_FileMeta(name, 0, parent_path ?? "");
-      await this.fs_meta.setItem(parent_path ?? "", parent);
-      await this.fs_meta.setItem(full_path, meta);
+      await this.fs_meta_map.setItem(parent_path ?? "", parent);
+      await this.fs_meta_map.setItem(full_path, meta);
       await this.file_map.setItem(full_path, new ArrayBuffer(0));
     }
 
@@ -215,16 +230,15 @@ export default class VirtualFileSystem {
 
   async open_dir(path: string, create: boolean = false) {
     const { parent_path, name, full_path } = parse_path(path);
-    let meta: VirtualFileSystemMeta | null = await this.fs_meta.getItem(
+    let meta: VirtualFileSystemMeta | null = await this.fs_meta_map.getItem(
       full_path
     );
 
     if (!create && !meta)
       throw new Error(`VirtualFileSystemError PathNotExist[${full_path}]`);
     else if (create) {
-      const parent: VirtualFileSystemMeta | null = await this.fs_meta.getItem(
-        parent_path ?? ""
-      );
+      const parent: VirtualFileSystemMeta | null =
+        await this.fs_meta_map.getItem(parent_path ?? "");
       if (!parent)
         throw new Error(`VirtualFileSystemError DirNotExist[${parent_path}]`);
       if (parent.type !== MetaType.DirectoryMeta)
@@ -234,8 +248,8 @@ export default class VirtualFileSystem {
       parent.files.push(full_path);
 
       meta = create_DirectoryMeta(name, parent_path);
-      await this.fs_meta.setItem(parent_path ?? "", parent);
-      await this.fs_meta.setItem(full_path, meta);
+      await this.fs_meta_map.setItem(parent_path ?? "", parent);
+      await this.fs_meta_map.setItem(full_path, meta);
     }
 
     console.log(meta);
@@ -251,19 +265,21 @@ export default class VirtualFileSystem {
 
   async entry(path: string) {
     const { parent_path, name, full_path } = parse_path(path);
-    let meta: VirtualFileSystemMeta | null = await this.fs_meta.getItem(
+    let meta: VirtualFileSystemMeta | null = await this.fs_meta_map.getItem(
       full_path
     );
     return meta;
   }
 
   async exist(path: string) {
-    const keys = await this.fs_meta.keys();
+    const keys = await this.fs_meta_map.keys();
     /** n 为路径数，O(n) */
     return keys.indexOf(path) !== -1;
   }
   async get_path_type(path: string) {
-    const meta: VirtualFileSystemMeta | null = await this.fs_meta.getItem(path);
+    const meta: VirtualFileSystemMeta | null = await this.fs_meta_map.getItem(
+      path
+    );
     if (!meta) throw new Error(`VirtualFileSystemError PathNotExist[${path}]`);
     return meta.type;
   }
@@ -274,7 +290,7 @@ export default class VirtualFileSystem {
       );
     }
     const { parent_path, name, full_path } = parse_path(path);
-    const parent: VirtualFileSystemMeta | null = await this.fs_meta.getItem(
+    const parent: VirtualFileSystemMeta | null = await this.fs_meta_map.getItem(
       parent_path ?? ""
     );
     if (!parent)
@@ -289,12 +305,12 @@ export default class VirtualFileSystem {
     parent.files.push(full_path);
 
     const new_dir = create_DirectoryMeta(name, parent_path ?? "");
-    await this.fs_meta.setItem(parent_path ?? "", parent);
-    await this.fs_meta.setItem(full_path, new_dir);
+    await this.fs_meta_map.setItem(parent_path ?? "", parent);
+    await this.fs_meta_map.setItem(full_path, new_dir);
   }
   async remove(path: string) {
     const { parent_path, name, full_path } = parse_path(path);
-    const meta: VirtualFileSystemMeta | null = await this.fs_meta.getItem(
+    const meta: VirtualFileSystemMeta | null = await this.fs_meta_map.getItem(
       full_path
     );
     if (!meta) {
@@ -302,7 +318,7 @@ export default class VirtualFileSystem {
         `VirtualFileSystemError PathExist[${path}]: The path already exists when trying to create the directory`
       );
     }
-    await this.fs_meta.removeItem(full_path);
+    await this.fs_meta_map.removeItem(full_path);
     await this.file_map.removeItem(full_path);
     if (meta.type === MetaType.FileMeta) {
       return;

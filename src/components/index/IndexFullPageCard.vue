@@ -11,7 +11,7 @@ const props = defineProps<{
 Card(@click="$router.push(page.path)")
   div {{ page.name }}
   div.text-sm.text-zinc-600 {{ page.description }}
-  .flex.flex-row.items-center.mt-1
-    q-icon.text-zinc-400.pr-1(name="mdi-tag")
-    q-chip.text-xs(v-for="tag in page.tags") {{ tag.name }}
+  .flex.flex-row.items-center
+    q-icon.text-zinc-400.mr-1(name="mdi-tag" class="mobile-hide")
+    q-chip.text-xs.py-1.px-2(v-for="tag in page.tags.slice(0, 2)" class="md:py-3 md:px-3") {{ tag.name }}
 </template>
