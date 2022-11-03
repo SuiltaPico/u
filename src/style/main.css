@@ -15,3 +15,7 @@
 .q-field--filled .q-field__control:hover::before {
   @apply opacity-50
 }
+
+.normal_mage{
+  @apply bg-white flex flex-col gap-10 min-w-100 max-w-100 px-1 py-8 sm:min-w-75 sm:max-w-75 xl:min-w-50 xl:max-w-50 xl:px-8
+}

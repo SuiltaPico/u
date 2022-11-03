@@ -24,3 +24,7 @@ export function any(v: any){
 export function as<T>(v: any){
   return v as T
 }
+
+export function not_null<T>(v: T){
+  return v as Exclude<T, undefined | null>
+}

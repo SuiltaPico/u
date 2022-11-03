@@ -34,7 +34,7 @@ emits("default_update:wrap", !props.render_tag_tree.no_wrap);
     .text-lg.flex.flex-row.gap-2.cursor-pointer.select-none.items-center(v-if="!children_only" @click="emits('update:wrap', !wrap)")
       q-icon(name="mdi-chevron-right" class="transition" :class="{'rotate-90': wrap}")
       div {{ render_tag_tree.name }}
-    .flex.flex-row.px-6(v-if="wrap")
+    .flex.flex-row.px-6.gap-4(v-if="wrap")
       Card(v-for="p in render_tag_tree.page_children" :key="p.name"
         @click="$router.push(p.path)" style="max-width: 14rem;")
         .flex.flex-row.gap-2.items-center

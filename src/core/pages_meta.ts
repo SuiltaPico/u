@@ -5,6 +5,7 @@ export const tag_relations: [tag_name: string, parents: string | string[]][] = [
   ["PDF", "文档"],
   ["文档", "文件"],
   ["矩阵", "数学"],
+  ["随机", "数学"],
   ["音频", "媒体"],
   ["采样率", "媒体"],
   ["重采样", ["数学", "媒体"]],
@@ -79,6 +80,12 @@ export const raw_pages: RawPage[] = [
     path: "color_box_festival",
     tags: ["横版游戏"]
   }*/,
+  {
+    name: "这个文件足够随机吗",
+    path: "is_this_file_random_enough",
+    description: "对文件随机程度的判断器。",
+    tags: ["文件", "随机"],
+  },
   {
     name: "404",
     path: ":pathMatch(.*)",
