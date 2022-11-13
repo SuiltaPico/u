@@ -96,14 +96,18 @@ function generate_charts_data(data: Uint8Array) {
 
     const len = 2 ** t.length;
     const counter: number[] = new Array(len).fill(0, 0, len);
+    
     if (t.length === 1) {
+      let one_counter = 0;
       for (let di = 0; di < new_data.length; di++) {
-        for (let ci = 0; ci < 8; ci++) {
-          const index = (new_data[di] >> ci) & 1;
-          counter[index]++;
-        }
+        const a = data[di];
+        const c = ((a >> 0) & 0b01_01_01_01) + ((a >> 1) & 0b01_01_01_01);
+        const e = ((c >> 0) & 0b0011_0011) + ((c >> 2) & 0b0011_0011);
+        one_counter += ((e >> 0) & 0b00001111) + ((e >> 4) & 0b00001111);
       }
-    } else if (t.length < 8) {
+      counter[0] = new_data.length * 8 - one_counter;
+      counter[1] = one_counter;
+    } else if (t.length <= 8) {
       for (let di = 0; di < new_data.length; di++) {
         count(new_data[di], t.length, counter, new_data[di - 1]);
       }
@@ -139,11 +143,11 @@ function generate_charts_data(data: Uint8Array) {
         echarts_option.series as echarts.SeriesOption[]
       )[1] as echarts.PieSeriesOption
     ).radius = [
-      40 + Math.floor(average / ed_max * 30) + "%",
-      40 + Math.floor(average / ed_max * 30) + 0.5 + "%",
+      40 + Math.floor((average / ed_max) * 30) + "%",
+      40 + Math.floor((average / ed_max) * 30) + 0.5 + "%",
     ];
     console.log(echarts_option, average, ed_max);
-    
+
     charts[ti].setOption(echarts_option);
 
     console.timeEnd("task" + t.length);
@@ -172,6 +176,9 @@ const _tasks = reactive([
   },
   {
     length: 7,
+  },
+  {
+    length: 8,
   },
 ]);
 
@@ -221,7 +228,7 @@ const echarts_option: echarts.EChartsOption = {
       radius: ["40%", "41%"],
       data: [{ value: 1, name: " " }],
       tooltip: {
-        show: false
+        show: false,
       },
       labelLine: {
         show: false,
