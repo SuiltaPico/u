@@ -82,7 +82,20 @@ function generate_charts_data(data: Uint8Array) {
     }
   }
 
-  const echarts_datas: { value: number; name: string }[][] = new Array(
+  function count_x(
+    u8: number,
+    window_size: number,
+    counter: number[],
+    u8_last: number[]
+  ) {
+    // u8 = [last: ..., u8: 8]
+    u8 = u8_last.reduce((p, c) => p * 256 + c) * 256 + u8;
+    // 从 last 末尾截取 window_size - 1 位
+    for (let ci = 0; ci < 8; ci++)
+      counter[(u8 >> ci) & (2 ** window_size - 1)]++;
+  }
+
+  const echarts_datas: { value: number; name: string }[][] = Array(
     _tasks.length
   );
   for (let i = 0; i < echarts_datas.length; i++) {
@@ -95,8 +108,8 @@ function generate_charts_data(data: Uint8Array) {
     console.time("task" + t.length);
 
     const len = 2 ** t.length;
-    const counter: number[] = new Array(len).fill(0, 0, len);
-    
+    const counter: number[] = Array(len).fill(0, 0, len);
+
     if (t.length === 1) {
       let one_counter = 0;
       for (let di = 0; di < new_data.length; di++) {
@@ -111,6 +124,20 @@ function generate_charts_data(data: Uint8Array) {
       for (let di = 0; di < new_data.length; di++) {
         count(new_data[di], t.length, counter, new_data[di - 1]);
       }
+    } else {
+      for (let di = 0; di < new_data.length; di++) {
+        const arr = (() => {
+          const x = Math.ceil(Math.log2(t.length)) - 2;
+          const arr: number[] = Array(x).fill(0, 0, x);
+          for (let i = 0; i < x; i++) {
+            arr[x - i - 1] = new_data[di - i - 1] ?? 0;
+          }
+          return arr;
+        })();
+        if (di === 0 || di === 20) console.log(arr);
+
+        count_x(new_data[di], t.length, counter, arr);
+      }
     }
     // } else if (t.length === 2) {
     //   for (let di = 0; di < data.length; di++) {
@@ -122,21 +149,37 @@ function generate_charts_data(data: Uint8Array) {
     // }
 
     const ed = echarts_datas[ti];
-    let average = 0;
     const ed_max: number = max(counter);
-    for (let i = 0; i < counter.length; i++) {
-      const c = counter[i];
-      average += c;
-      ed.push({
-        name: i
-          .toString(2)
-          .split("")
-          .toString()
-          .padStart(t.length * 2 - 1, "0,"),
-        value: c,
-      });
+    const average = (new_data.length * 8) / counter.length;
+    if (_tasks[ti].length > 8) {
+      const cc = counter.map((v, i) => ({ v, i })).sort((a, b) => b.v - a.v);
+      console.log(cc);
+      cc.slice(0, 314)
+        .sort((a, b) => b.i - a.i)
+        .forEach((c) => {
+          ed.push({
+            name: c.i
+              .toString(2)
+              .split("")
+              .toString()
+              .padStart(t.length * 2 - 1, "0,"),
+            value: c.v,
+          });
+        });
+    } else {
+      for (let i = 0; i < counter.length; i++) {
+        const c = counter[i];
+        ed.push({
+          name: i
+            .toString(2)
+            .split("")
+            .toString()
+            .padStart(t.length * 2 - 1, "0,"),
+          value: c,
+        });
+      }
     }
-    average /= counter.length;
+
     (echarts_option.series as echarts.SeriesOption[])[0].data = ed;
     (
       (
@@ -146,7 +189,7 @@ function generate_charts_data(data: Uint8Array) {
       40 + Math.floor((average / ed_max) * 30) + "%",
       40 + Math.floor((average / ed_max) * 30) + 0.5 + "%",
     ];
-    console.log(echarts_option, average, ed_max);
+    // console.log(echarts_option, average, ed_max);
 
     charts[ti].setOption(echarts_option);
 
@@ -179,6 +222,9 @@ const _tasks = reactive([
   },
   {
     length: 8,
+  },
+  {
+    length: 12,
   },
 ]);
 
@@ -282,7 +328,7 @@ q-page.normal_mage(class="md:min-w-[70%] md:max-w-[70%]")
     
     .flex.flex-row.gap-2.justify-center
       .flex.flex-col.gap-2(v-for="t in _tasks")
-        .text-base 滑动窗口 {{ t.length }}
+        .text-base 滑动窗口 {{ t.length }} {{ t.length > 8 ? "（前314个）": "" }}
         div.w-96.h-96(:id="'slide_window_' + t.length" :class="{'min-w-[50vw]': t.length >= 7, 'min-h-[50vw]': t.length >= 7}")
 
   .flex.flex-row.gap-2
