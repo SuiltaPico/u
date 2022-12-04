@@ -9,6 +9,8 @@ export const tag_relations: [tag_name: string, parents: string | string[]][] = [
   ["音频", "媒体"],
   ["采样率", "媒体"],
   ["重采样", ["数学", "媒体"]],
+  ["OCR", "图像"],
+  ["图像", "文件"],
 ];
 
 function tag_relation_to_mermaid() {
@@ -30,25 +32,9 @@ console.log(tag_relation_to_mermaid());
 
 export const raw_pages: RawPage[] = [
   {
-    name: "首页",
-    path: "index",
-    alias: "/",
-    hide: true,
-  },
-  {
-    name: "设置",
-    path: "settings",
-    hide: true,
-  },
-  {
-    name: "关于",
-    path: "about",
-    hide: true,
-  },
-  {
     name: "虚拟文件系统管理",
     path: "vfsmgr/:full_path*",
-    compo_path: "virtual_filesystem_manager",
+    compo_path: "site/virtual_filesystem_manager",
     hide: true,
   },
   {
@@ -86,15 +72,58 @@ export const raw_pages: RawPage[] = [
     description: "对文件随机程度的判断器。",
     tags: ["文件", "随机"],
   },
+  // {
+  //   name: "OCR",
+  //   path: "ocr",
+  //   description: "ocr 文字识别",
+  //   tags: ["OCR", "图像"],
+  // },
+  // {
+  //   name: "DSP-Lab",
+  //   path: "dsp-lab/index",
+  //   description: "数字信号处理实验室（Web Audio API 实验室）",
+  //   tags: ["数字信号处理"],
+  // },
+  {
+    name: "有向图（关系）绘制器",
+    path: "directed_graph_drawer",
+    description: "可以用于快速绘制关系，链表",
+    tags: ["数学"],
+  },
+];
+
+export const raw_pages_with_framework: RawPage[] = [
+  {
+    name: "首页",
+    path: "index",
+    alias: "/",
+    compo_path: "site/index",
+    hide: true,
+  },
+  {
+    name: "设置",
+    path: "settings",
+    compo_path: "site/settings",
+    hide: true,
+  },
+  {
+    name: "关于",
+    path: "about",
+    compo_path: "site/about",
+    hide: true,
+  },
+  ...raw_pages,
   {
     name: "404",
     path: ":pathMatch(.*)",
-    compo_path: "404",
+    compo_path: "site/404",
     hide: true,
   },
 ];
 
-export const pages: Page[] = raw_pages.map((rp) => RawPage_to_Page(rp));
+export const pages: Page[] = raw_pages_with_framework.map((rp) =>
+  RawPage_to_Page(rp)
+);
 
 /** tag 树，按照 `tag_relations` 先前指定的关系构建的树。如果子节点有多个父对象，那么父对象都包含这个子对象的同一份引用 */
 export const tag_tree: TagTreeNode = {
@@ -252,7 +281,7 @@ function build_render_tag_tree(
     }
   }
   if (!has_children) {
-    target.no_wrap = true
+    target.no_wrap = true;
   }
   return target;
 }
@@ -265,7 +294,7 @@ console.log(render_tag_tree);
 /** 通过文本搜索页面，将遍历 tag 、页面标题和描述 */
 export function search_pages(search_text: string) {
   if (!search_text) return [];
-  const prompts = search_text.split(" ").filter((s) => s.length !== 0);
+  const prompts = search_text.toLowerCase().split(" ").filter((s) => s.length !== 0);
   const result = new Set<Page>();
   // 从 tag 中搜索。O(n^2)
   for (const tag of tags) {
@@ -295,5 +324,5 @@ export function search_pages(search_text: string) {
     }
   }
 
-  return [...result.values()].filter(p=>!p.hide);
+  return [...result.values()].filter((p) => !p.hide);
 }

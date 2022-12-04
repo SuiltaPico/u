@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import use_main_store from '../store/main_store';
+import use_main_store from '../../store/main_store';
 
 const main_store = use_main_store()
 </script>

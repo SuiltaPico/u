@@ -371,7 +371,7 @@ function show_warning_dialog(title: string, content: string) {
 </script>
 
 <template lang="pug">
-q-page(class="px-2 py-4 sm:px-4 sm:py-8").flex.flex-col.gap-8.w-full.max-w-3xl
+q-page.flex.flex-col.gap-8.w-full.max-w-3xl(class="px-2 py-4 sm:px-4 sm:py-8 page")
   .flex.flex-col.gap-4(v-if="ffmpeg_loaded")
     .text-lg#progress-bar 进度
     q-linear-progress(:value="progress_value" animation-speed="200")

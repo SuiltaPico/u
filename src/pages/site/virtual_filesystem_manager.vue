@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import use_main_store from "../store/main_store";
-import { DirEntry, MetaType } from "../lib/virtual_fs/VirtualFileSystem";
-import type { VirtualFileSystemMeta } from "../lib/virtual_fs/VirtualFileSystem";
+import use_main_store from "../../store/main_store";
+import { DirEntry, MetaType } from "../../lib/virtual_fs/VirtualFileSystem";
+import type { VirtualFileSystemMeta } from "../../lib/virtual_fs/VirtualFileSystem";
 import { useRoute, useRouter } from "vue-router";
 
 const main_store = use_main_store();

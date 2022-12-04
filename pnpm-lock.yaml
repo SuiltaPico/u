@@ -13,6 +13,7 @@ specifiers:
   '@types/prettier': ^2.7.0
   '@vitejs/plugin-vue': ^3.0.3
   autoprefixer: ^10.4.8
+  bidirectional-map: ^1.1.1
   echarts: ^5.4.0
   jszip: ^3.10.1
   katex: ^0.16.2
@@ -47,6 +48,7 @@ dependencies:
   '@lillallol/outline-pdf': 4.0.0
   '@quasar/extras': 1.15.2
   '@types/prettier': 2.7.0
+  bidirectional-map: 1.1.1
   echarts: 5.4.0
   jszip: 3.10.1
   katex: 0.16.2
@@ -544,6 +546,10 @@ packages:
   /before-after-hook/2.2.3:
     resolution: {integrity: sha512-NzUnlZexiaH/46WDhANlyR2bXRopNg4F/zuSA3OpZnllCUgRaOF2znDioDWrmbNVsuZk6l9pMquQB38cfBZwkQ==}
     dev: true
+
+  /bidirectional-map/1.1.1:
+    resolution: {integrity: sha512-qfpqHKQbSpc5Eev0W35FZoPnoNUvItDrHbVU0YYKkAOBCZ4Dp3CYi9tjAQcdmqN6ui/9+ioIkb9m0uz8EZqPkA==}
+    dev: false
 
   /binary-extensions/2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}

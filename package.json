@@ -16,6 +16,7 @@
     "@lillallol/outline-pdf": "^4.0.0",
     "@quasar/extras": "^1.15.2",
     "@types/prettier": "^2.7.0",
+    "bidirectional-map": "^1.1.1",
     "echarts": "^5.4.0",
     "jszip": "^3.10.1",
     "katex": "^0.16.2",

@@ -2,9 +2,13 @@ import { createRouter, RouteRecordRaw, createWebHistory } from "vue-router";
 import { pages } from "../core/pages_meta";
 import use_main_store from "../store/main_store";
 
+console.log(pages);
+
+const src_pages_components = import.meta.glob('../pages/**/*.vue')
+
 const routes: RouteRecordRaw[] = pages.map((p) => ({
   name: p.name,
-  component: () => import(`../pages/${p.compo_path}.vue`),
+  component: src_pages_components[`../pages/${p.compo_path}.vue`],
   alias: p.alias ?? [],
   path: p.path,
 }));

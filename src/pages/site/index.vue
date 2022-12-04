@@ -3,13 +3,13 @@ import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { Observable, debounceTime } from "rxjs";
 
-import { search_pages, render_tag_tree, pages } from "../core/pages_meta";
-import type Page from "../lib/page";
-import type { KeyOfArray } from "../lib/types";
-import use_main_store from "../store/main_store";
-import IndexPagesTree from "../components/index/IndexPagesTree.vue";
-import Card from "../components/Card.vue";
-import IndexFullPageCard from "../components/index/IndexFullPageCard.vue";
+import { search_pages, render_tag_tree, pages } from "../../core/pages_meta";
+import type Page from "../../lib/page";
+import type { KeyOfArray } from "../../lib/types";
+import use_main_store from "../../store/main_store";
+import IndexPagesTree from "../../components/index/IndexPagesTree.vue";
+import Card from "../../components/Card.vue";
+import IndexFullPageCard from "../../components/index/IndexFullPageCard.vue";
 
 const router = useRouter();
 const main_store = use_main_store();
