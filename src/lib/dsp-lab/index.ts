@@ -38,16 +38,16 @@ export interface INodeGraphRunner {
   use_node_graph(node_graph: INodeGraph): void
 }
 
-export class AudioContextNodeGraph implements INodeGraph {
+// export class AudioContextNodeGraph implements INodeGraph {
 
-}
+// }
 
-export class AudioContextNodeGraphRunner implements INodeGraphRunner {
-  audio_context: AudioContext;
-  nodes: Set<INode> = new Set();
-  constructor(sample_rate: number) {
-    this.audio_context = new AudioContext({
-      sampleRate: sample_rate,
-    });
-  }
-}
+// export class AudioContextNodeGraphRunner implements INodeGraphRunner {
+//   audio_context: AudioContext;
+//   nodes: Set<INode> = new Set();
+//   constructor(sample_rate: number) {
+//     this.audio_context = new AudioContext({
+//       sampleRate: sample_rate,
+//     });
+//   }
+// }

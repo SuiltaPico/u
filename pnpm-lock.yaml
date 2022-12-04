@@ -7,6 +7,7 @@ specifiers:
   '@lillallol/outline-pdf': ^4.0.0
   '@quasar/extras': ^1.15.2
   '@quasar/vite-plugin': ^1.1.1
+  '@types/bidirectional-map': ^1.0.1
   '@types/katex': ^0.14.0
   '@types/node': ^18.11.1
   '@types/p5': ^1.4.3
@@ -70,6 +71,7 @@ dependencies:
 
 devDependencies:
   '@quasar/vite-plugin': 1.1.1_ypwirnofg5ymml35wcnealqhda
+  '@types/bidirectional-map': 1.0.1
   '@types/katex': 0.14.0
   '@types/node': 18.11.1
   '@types/p5': 1.4.3
@@ -320,6 +322,10 @@ packages:
       quasar: 2.7.7
       vite: 3.0.9_sass@1.32.12
       vue: 3.2.38
+    dev: true
+
+  /@types/bidirectional-map/1.0.1:
+    resolution: {integrity: sha512-CS8vichn5fKotLR7gFMyiNGZhaz83Fi+VTmPTbnWyXp1+aiuY5yliuptqFvZbAbyi9o1EzAVBSsb+1z1rHqUvA==}
     dev: true
 
   /@types/katex/0.14.0:

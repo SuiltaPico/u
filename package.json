@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@quasar/vite-plugin": "^1.1.1",
+    "@types/bidirectional-map": "^1.0.1",
     "@types/katex": "^0.14.0",
     "@types/node": "^18.11.1",
     "@types/p5": "^1.4.3",
