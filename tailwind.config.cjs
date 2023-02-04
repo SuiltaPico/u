@@ -28,9 +28,25 @@ module.exports = {
           150: "#" + ((
             color_to_int(colors.zinc[100]) + color_to_int(colors.zinc[200])
           ) / 2).toString(16)
+        },
+        neutral: {
+          125: "#" + (
+            color_to_int(colors.neutral[100]) / 4 * 3
+            + color_to_int(colors.neutral[200]) / 4
+          ).toString(16),
+          150: "#" + ((
+            color_to_int(colors.neutral[100]) + color_to_int(colors.neutral[200])
+          ) / 2).toString(16)
+        },
+        'blue-neutral': {
+          200: "#" + Math.round((
+            color_to_int(colors.blue[300]) + color_to_int(colors.neutral[200])
+          ) / 2).toString(16)
         }
       }
     },
   },
-  plugins: [],
+  plugins: [
+    'tailwindcss/nesting'
+  ],
 }

@@ -5,7 +5,7 @@ import type { Ref } from "vue";
 import { WaveFile } from "wavefile";
 import { defineStore } from "pinia";
 
-import type { KeyOfArray } from "../lib/types";
+import type { ItemsOfArray } from "../lib/common/types_utils";
 import { create_object_url, download_url, as } from "../lib/utils";
 import StorePropertyRef from "../lib/store_property_ref";
 import Card from "../components/Card.vue";
@@ -30,13 +30,13 @@ const resampling_methods_options = [
     LPF: true,
   },
   {
-    label: "窗口化 sinc 插值",
+    label: "带窗 sinc 插值",
     value: "sinc",
-    desc: "质量较高，速度较慢。",
+    desc: "质量较高，速度最慢。",
     LPF: false,
   },
 ] as const;
-type ResamplingMethod = KeyOfArray<typeof resampling_methods_options>;
+type ResamplingMethod = ItemsOfArray<typeof resampling_methods_options>;
 
 const LPF_types_options = [
   {
@@ -51,7 +51,7 @@ const LPF_types_options = [
   },
 ] as const;
 
-type LPFType = KeyOfArray<typeof LPF_types_options>;
+type LPFType = ItemsOfArray<typeof LPF_types_options>;
 
 const default_store_options = {
   using_ffmpeg: false,
@@ -371,9 +371,11 @@ function show_warning_dialog(title: string, content: string) {
 </script>
 
 <template lang="pug">
-q-page.flex.flex-col.gap-8.w-full.max-w-3xl(class="px-2 py-4 sm:px-4 sm:py-8 page")
+q-page.flex.flex-col.gap-8.w-full.max-w-4xl.bg-neutral-100(
+  class="px-2 py-4 md:px-4 md:py-8 lg:px-8 lg:py-8 page"
+)
   .flex.flex-col.gap-4(v-if="ffmpeg_loaded")
-    .text-lg#progress-bar 进度
+    .text-lg#progress-bar.section-title 进度
     q-linear-progress(:value="progress_value" animation-speed="200")
 
   .flex.flex-col.gap-4
@@ -492,6 +494,7 @@ q-page.flex.flex-col.gap-8.w-full.max-w-3xl(class="px-2 py-4 sm:px-4 sm:py-8 pag
           q-icon(name="mdi-restore" size="1.4rem")
           div 重置当前页面所有设置
 </template>
+
 <style>
 audio:active,
 audio:focus {

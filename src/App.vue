@@ -14,9 +14,16 @@ q-layout(view="hHh lpR fFf")
 
   LeftBar
   
-  PageContainer.px-4.flex.justify-center
+  PageContainer.bg-neutral-400.flex.justify-center(
+    class="xl:px-16"
+    )
 
-  q-inner-loading(:showing="main_store.framwork_loading" color="primary")
+  q-inner-loading(
+    :showing="main_store.framwork_loading"
+    color="primary"
+    label="正在载入资源……"
+  )
+
 </template>
 
 <style>
@@ -25,7 +32,7 @@ html, body, #app {
 }
 
 #app {
-  @apply bg-white;
+  @apply bg-zinc-150;
 }
 
 .q-focus-helper{

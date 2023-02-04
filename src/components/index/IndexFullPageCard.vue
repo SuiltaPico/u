@@ -9,7 +9,7 @@ const props = defineProps<{
 
 <template lang="pug">
 Card(@click="$router.push(page.path)")
-  div {{ page.name }}
+  div.text-base {{ page.name }}
   div.text-sm.text-zinc-600 {{ page.description }}
   .flex.flex-row.items-center
     q-icon.text-zinc-400.mr-1(name="mdi-tag" class="mobile-hide")

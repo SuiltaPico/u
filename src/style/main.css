@@ -2,20 +2,107 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  -webkit-font-smoothing: antialiased;
+}
+
 .q-field--filled > .q-field__inner > .q-field__control {
   background: none;
 }
 
-.q-field--filled.q-field--highlighted > .q-field__inner > .q-field__control:before{
+.q-field--filled.q-field--highlighted
+  > .q-field__inner
+  > .q-field__control:before {
   opacity: 0;
 }
 
 .q-field--filled .q-field__control::before {
 }
 .q-field--filled .q-field__control:hover::before {
-  @apply opacity-50
+  @apply opacity-50;
 }
 
-.normal_mage{
-  @apply bg-white flex flex-col gap-10 min-w-100 max-w-100 px-1 py-8 sm:min-w-75 sm:max-w-75 xl:min-w-50 xl:max-w-50 xl:px-8
+.normal_page {
+  @apply flex gap-12 min-w-100 max-w-100 pt-8 sm:min-w-75 sm:max-w-[95%] xl:min-w-[90%] xl:max-w-[90%];
+}
+
+.selectable-card {
+  @apply bg-neutral-125 cursor-pointer border-b-2 border-zinc-100;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.14s;
+  @apply hover:bg-neutral-200 hover:border-b-neutral-400;
+  @apply active:bg-blue-100 active:border-b-blue-500;
+}
+
+.white-selectable-card {
+  @apply bg-white cursor-pointer before:w-[3px] before:h-[1.2rem] before:bg-neutral-400;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.14s;
+  @apply hover:bg-neutral-200 hover:before:bg-neutral-400;
+  @apply active:bg-blue-100 active:before:bg-blue-500;
+}
+
+.selectable-card-enabled__base {
+  @apply text-blue-700  bg-blue-100;
+  @apply hover:bg-blue-200;
+  @apply active:bg-blue-neutral-200;
+}
+
+.selectable-card-enabled {
+  @apply selectable-card-enabled__base;
+  @apply border-b-blue-500;
+  @apply hover:border-b-blue-500;
+  @apply active:border-b-blue-600 active:text-blue-800;
+}
+
+.white-selectable-card-enabled {
+  @apply selectable-card-enabled__base;
+  @apply before:bg-blue-500;
+  @apply hover:before:bg-blue-500;
+  @apply active:before:bg-blue-600 active:text-blue-800;
+}
+
+.card {
+  --tr: 0%;
+  @apply flex flex-col bg-white p-4 cursor-pointer border-[2px] border-neutral-200;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.14s;
+  @apply hover:border-blue-400 hover:shadow-blue-100;
+  @apply focus:border-blue-400 focus:shadow-blue-100;
+  @apply active:bg-zinc-100 active:shadow active:border-blue-500;
+  &:hover .tag-icon {
+    @apply text-blue-500;
+  }
+  &:active {
+    --tr: 2%;
+    background-image: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, var(--tr)),
+      rgba(255, 255, 255, var(--tr))
+    );
+    & .tag-icon{
+      @apply text-blue-700;
+    }
+  }
+}
+
+.card-title {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.14s;
+}
+
+.tag {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.14s;
+  @apply bg-zinc-150 m-0.5;
+}
+
+.tag-icon {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.14s;
+  @apply text-zinc-600;
+}
+
+.card:active .tag {
+  @apply bg-zinc-300;
 }

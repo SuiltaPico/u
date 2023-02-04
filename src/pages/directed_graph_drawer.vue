@@ -4,12 +4,12 @@ import type { Ref } from "vue";
 import katex from "katex";
 import "katex/dist/katex.min.css";
 
-import { incrementIDGeneratorFactory } from "../lib/common/id";
+import { ID, incrementIDGeneratorFactory } from "../lib/common/id";
 import RelationMap from "../lib/common/relation_map";
-import { number } from "mathjs";
+import { IRelation } from "../lib/common/relation";
+import { IEntity } from "../lib/common/entity";
 
-interface INode {
-  id: number;
+interface INode extends IEntity {
   name?: string;
 }
 
@@ -35,11 +35,6 @@ function get_selectable_color(node: ISelectable) {
 
 interface IRenderNode extends INode, IPositon, ISelectable {}
 
-interface IRelation {
-  src: number;
-  target: number;
-}
-
 const node_counter = ref(0);
 const node_map: Ref<Record<number, IRenderNode>> = ref({});
 
@@ -61,7 +56,7 @@ function delete_node(node_id: number) {
   node_counter.value--;
 }
 
-const relation_map = reactive(new RelationMap<number>());
+const relation_map = reactive(new RelationMap<ID>());
 const relation_map_iter = relation_map[Symbol.iterator];
 
 enum Reflexive {
@@ -138,8 +133,16 @@ const relation_map_transitive_state = computed(() => {
   return Transitive.No;
 });
 
-function add_relation(relation: IRelation) {
+function add_relation(relation: IRelation<number>) {
   relation_map.set(relation.src, relation.target);
+}
+
+function build_total_order_relation() {
+  for (const a of Object.values(node_map.value)) {
+    for (const b of Object.values(node_map.value)) {
+      add_relation({src: a.id, target: b.id})
+    }
+  }
 }
 
 const id_generator = incrementIDGeneratorFactory();
@@ -297,17 +300,10 @@ function node_mouse_enter(node_id: number, event: MouseEvent) {
   }
 }
 
-
-function build_total_order_relation() {
-  for (const a of Object.values(node_map.value)) {
-    for (const b of Object.values(node_map.value)) {
-      add_relation({src: a.id, target: b.id})
-    }
-  }
-}
-
 const relation_distance = 4;
 let relation_angle = 0;
+
+const new_name = ref("")
 </script>
 
 <template lang="pug">
@@ -341,7 +337,7 @@ q-page.flex.flex-col.gap-4.p-2.w-full(ref="page")
       .flex.flex-row.gap-4.items-center(ref="canvas_toolbar")
         q-btn(outline @click="clear_canvas") 清除画布
         .flex.flex-row.gap-1
-          q-input(label="新名称" outlined dense)
+          q-input(label="新名称" v-model="new_name" outlined dense)
           q-btn(outline @click="clear_canvas") 改名
         .flex.flex-row.gap-1
           q-btn(outline @click="build_total_order_relation") 构建全序关系

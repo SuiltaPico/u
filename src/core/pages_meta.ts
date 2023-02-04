@@ -1,6 +1,33 @@
 import Page, { RawPage, RawPage_to_Page } from "../lib/page";
 import Tag, { TagTreeNode } from "../lib/tag";
 
+const raw_tag_icon_map: {
+  [tag_name: string]: string | { name: string; scaling: number };
+} = {
+  全部: "mdi-creation",
+  最近访问: "mdi-history",
+  文件: { name: "mdi-file-multiple", scaling: 0.85 },
+  数学: "mdi-android-studio",
+  随机: "mdi-dice-multiple-outline",
+  数字信号处理: "mdi-waveform",
+  未分组: "mdi-help-box",
+  编码: "mdi-numeric-0-box-multiple"
+};
+
+export const tag_icon_map = (() => {
+  const result: {
+    [tag_name: string]: { name: string; scaling: number };
+  } = {};
+  Object.entries(raw_tag_icon_map).forEach(([name, value]) => {
+    if (typeof value === "string") {
+      result[name] = { name: value, scaling: 1 };
+      return;
+    }
+    result[name] = value;
+  });
+  return result;
+})();
+
 export const tag_relations: [tag_name: string, parents: string | string[]][] = [
   ["PDF", "文档"],
   ["文档", "文件"],
@@ -8,9 +35,11 @@ export const tag_relations: [tag_name: string, parents: string | string[]][] = [
   ["随机", "数学"],
   ["音频", "媒体"],
   ["采样率", "媒体"],
-  ["重采样", ["数学", "媒体"]],
+  ["数字信号处理", "数学"],
+  ["重采样", ["数字信号处理", "媒体"]],
   ["OCR", "图像"],
   ["图像", "文件"],
+  ["编码", ["文件", "数学"]]
 ];
 
 function tag_relation_to_mermaid() {
@@ -30,66 +59,71 @@ function tag_relation_to_mermaid() {
 
 console.log(tag_relation_to_mermaid());
 
+const math_raw_pages: RawPage[] = [
+  {
+    name: "霍夫曼编码",
+    path: "huffman_coding",
+    compo_path: "math/huffman_coding",
+    description: "对字符串进行霍夫曼编码和解码",
+    tags: ["数学", "编码"],
+  },
+]
+
 export const raw_pages: RawPage[] = [
-  {
-    name: "虚拟文件系统管理",
-    path: "vfsmgr/:full_path*",
-    compo_path: "site/virtual_filesystem_manager",
-    hide: true,
-  },
-  {
-    name: "PDF 大纲制作",
-    path: "pdf_outline_maker",
-    description: "重新制作 PDF 文件的目录。",
-    tags: ["PDF", "目录"],
-  },
-  {
-    name: "文件浏览",
-    path: "view_file",
-    description: "方便手机用户预览一些文件。",
-    tags: ["文件"],
-  },
-  {
-    name: "矩阵工具",
-    path: "matrix_tools",
-    description: "临时的。",
-    tags: ["数学", "矩阵"],
-  },
+  ...math_raw_pages,
+  // {
+  //   name: "PDF 大纲制作",
+  //   path: "pdf_outline_maker",
+  //   description: "重新制作 PDF 文件的目录。",
+  //   tags: ["PDF", "目录"],
+  // },
+  // {
+  //   name: "文件浏览",
+  //   path: "view_file",
+  //   description: "方便手机用户预览一些文件。",
+  //   tags: ["文件"],
+  // },
+  // {
+  //   name: "矩阵工具",
+  //   path: "matrix_tools",
+  //   description: "临时的。",
+  //   tags: ["数学", "矩阵"],
+  // },
   {
     name: "改变采样率",
     path: "change_sample_rate",
     description: "支持多种算法重新改变音频文件的采样率。",
     tags: ["音频", "采样率", "重采样"],
-  } /** 
-  {
-    name: "Color Box Festival",
-    path: "color_box_festival",
-    tags: ["横版游戏"]
-  }*/,
-  {
-    name: "这个文件足够随机吗",
-    path: "is_this_file_random_enough",
-    description: "对文件随机程度的判断器。",
-    tags: ["文件", "随机"],
   },
+  // {
+  //   name: "这个文件足够随机吗",
+  //   path: "is_this_file_random_enough",
+  //   description: "对文件随机程度的判断器。",
+  //   tags: ["文件", "随机"],
+  // },
   // {
   //   name: "OCR",
   //   path: "ocr",
   //   description: "ocr 文字识别",
   //   tags: ["OCR", "图像"],
   // },
-  // {
-  //   name: "DSP-Lab",
-  //   path: "dsp-lab/index",
-  //   description: "数字信号处理实验室（Web Audio API 实验室）",
-  //   tags: ["数字信号处理"],
-  // },
+  {
+    name: "DSP-Lab",
+    path: "dsp-lab/index",
+    description: "数字信号处理实验室（Web Audio API 实验室）",
+    tags: ["数字信号处理"],
+  },
   {
     name: "有向图（关系）绘制器",
     path: "directed_graph_drawer",
     description: "可以用于快速绘制关系，链表",
     tags: ["数学"],
   },
+  // {
+  //   name: "快速文本格式化",
+  //   path: "quick_text_fmt",
+  //   description: "让文本快速格式化成你想要的样子。",
+  // },
 ];
 
 export const raw_pages_with_framework: RawPage[] = [
@@ -112,6 +146,12 @@ export const raw_pages_with_framework: RawPage[] = [
     compo_path: "site/about",
     hide: true,
   },
+  {
+    name: "虚拟文件系统管理",
+    path: "vfsmgr/:full_path*",
+    compo_path: "site/virtual_filesystem_manager",
+    hide: true,
+  },
   ...raw_pages,
   {
     name: "404",
@@ -124,6 +164,8 @@ export const raw_pages_with_framework: RawPage[] = [
 export const pages: Page[] = raw_pages_with_framework.map((rp) =>
   RawPage_to_Page(rp)
 );
+
+export const unhidden_pages = pages.filter((p) => !p.hide);
 
 /** tag 树，按照 `tag_relations` 先前指定的关系构建的树。如果子节点有多个父对象，那么父对象都包含这个子对象的同一份引用 */
 export const tag_tree: TagTreeNode = {
@@ -235,7 +277,7 @@ export interface RenderTagTreeNode {
   node_children: RenderTagTreeNode[];
   page_children: Page[];
   /** 源节点的引用 */
-  ref: TagTreeNode;
+  ref?: TagTreeNode;
   no_wrap?: true;
 }
 
@@ -261,8 +303,8 @@ function build_render_tag_tree(
 
   for (const child of src.children) {
     if (child.type === "page") {
-      if (pages_set.has(child)) continue;
-      pages_set.add(child);
+      // if (pages_set.has(child)) continue;
+      // pages_set.add(child);
       page_children.push(child);
       has_children = true;
       continue;
@@ -286,15 +328,58 @@ function build_render_tag_tree(
   return target;
 }
 
-/** 合并处理过的标签树。所有页面只会出现一次 */
-export const render_tag_tree = build_render_tag_tree(tag_tree);
+function cut_tree_with_no_children(tree: RenderTagTreeNode) {
+  if (tree.node_children.length === 0 && tree.page_children.length === 0)
+    return true;
+  let no_page = true;
+  for (let index = 0; index < tree.node_children.length; index++) {
+    const t = tree.node_children[index];
+    if (!cut_tree_with_no_children(t)) no_page = false;
+    else {
+      tree.node_children.splice(index, 1);
+      index--;
+    }
+  }
+  if (no_page && tree.page_children.length === 0) return true;
+  return false
+}
+
+/** 合并处理过的标签树。所有页面只会出现一次。添加了“全部”标签，包含所有未隐藏的页面 */
+export const render_tag_tree = (() => {
+  const pre_render_tag_tree = build_render_tag_tree(tag_tree);
+  cut_tree_with_no_children(pre_render_tag_tree);
+  pre_render_tag_tree.node_children.splice(0, 0, {
+    type: "node",
+    name: "快速访问",
+    node_children: [
+      {
+        type: "node",
+        name: "全部",
+        node_children: [],
+        page_children: unhidden_pages,
+        ref: tag_tree
+      },
+      {
+        type: "node",
+        name: "最近访问",
+        node_children: [],
+        page_children: [],
+      }
+    ],
+    page_children: [],
+  });
+  return pre_render_tag_tree;
+})();
 
 console.log(render_tag_tree);
 
 /** 通过文本搜索页面，将遍历 tag 、页面标题和描述 */
 export function search_pages(search_text: string) {
   if (!search_text) return [];
-  const prompts = search_text.toLowerCase().split(" ").filter((s) => s.length !== 0);
+  const prompts = search_text
+    .toLowerCase()
+    .split(" ")
+    .filter((s) => s.length !== 0);
   const result = new Set<Page>();
   // 从 tag 中搜索。O(n^2)
   for (const tag of tags) {

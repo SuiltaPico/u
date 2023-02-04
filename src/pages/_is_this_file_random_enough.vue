@@ -14,7 +14,7 @@ const file_range = ref({
   length: 50,
 });
 
-function file_range_length_update(len: number) {
+function file_range_length_update(len: number | null) {
   const start_max =
     (file_data_buffer.value ?? { length: 1000 }).length -
     file_range.value.length ** 2;

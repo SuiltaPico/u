@@ -7,6 +7,7 @@ import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
 
 import autoprefixer from "autoprefixer";
 import tailwindcss from "tailwindcss";
+import tailwindcss_nesting from "tailwindcss/nesting/index.js";
 
 import { env } from "node:process";
 
@@ -25,7 +26,7 @@ export default defineConfig({
   ],
   css: {
     postcss: {
-      plugins: [tailwindcss, autoprefixer],
+      plugins: [tailwindcss_nesting, tailwindcss, autoprefixer],
     },
   },
   define: {

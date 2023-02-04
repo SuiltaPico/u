@@ -4,7 +4,7 @@ import use_main_store from "../store/main_store";
 
 console.log(pages);
 
-const src_pages_components = import.meta.glob('../pages/**/*.vue')
+const src_pages_components = import.meta.glob('../pages/**/[!_]*.vue')
 
 const routes: RouteRecordRaw[] = pages.map((p) => ({
   name: p.name,
