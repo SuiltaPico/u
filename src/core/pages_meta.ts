@@ -72,13 +72,13 @@ const math_raw_pages: RawPage[] = [
 
 export const raw_pages: RawPage[] = [
   ...math_raw_pages,
-  {
-    name: "压缩/解压缩",
-    path: "archive/",
-    compo_path: "archive/index",
-    description: "对文件进行压缩/解压缩，支持多种格式。",
-    tags: ["压缩"]
-  },
+  // {
+  //   name: "压缩/解压缩",
+  //   path: "archive/",
+  //   compo_path: "archive/index",
+  //   description: "对文件进行压缩/解压缩，支持多种格式。",
+  //   tags: ["压缩"]
+  // },
   // {
   //   name: "PDF 大纲制作",
   //   path: "pdf_outline_maker",
