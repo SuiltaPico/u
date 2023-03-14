@@ -11,7 +11,7 @@ const raw_tag_icon_map: {
   随机: "mdi-dice-multiple-outline",
   数字信号处理: "mdi-waveform",
   未分组: "mdi-help-box",
-  编码: "mdi-numeric-0-box-multiple"
+  编码: "mdi-numeric-0-box-multiple",
 };
 
 export const tag_icon_map = (() => {
@@ -39,7 +39,8 @@ export const tag_relations: [tag_name: string, parents: string | string[]][] = [
   ["重采样", ["数字信号处理", "媒体"]],
   ["OCR", "图像"],
   ["图像", "文件"],
-  ["编码", ["文件", "数学"]]
+  ["编码", ["文件", "数学"]],
+  ["压缩", "文件"],
 ];
 
 function tag_relation_to_mermaid() {
@@ -67,10 +68,17 @@ const math_raw_pages: RawPage[] = [
     description: "对字符串进行霍夫曼编码和解码",
     tags: ["数学", "编码"],
   },
-]
+];
 
 export const raw_pages: RawPage[] = [
   ...math_raw_pages,
+  {
+    name: "压缩/解压缩",
+    path: "archive/",
+    compo_path: "archive/index",
+    description: "对文件进行压缩/解压缩，支持多种格式。",
+    tags: ["压缩"]
+  },
   // {
   //   name: "PDF 大纲制作",
   //   path: "pdf_outline_maker",
@@ -107,18 +115,25 @@ export const raw_pages: RawPage[] = [
   //   description: "ocr 文字识别",
   //   tags: ["OCR", "图像"],
   // },
-  {
-    name: "DSP-Lab",
-    path: "dsp-lab/index",
-    description: "数字信号处理实验室（Web Audio API 实验室）",
-    tags: ["数字信号处理"],
-  },
+  // {
+  //   name: "DSP-Lab",
+  //   path: "dsp-lab/index",
+  //   description: "数字信号处理实验室（Web Audio API 实验室）",
+  //   tags: ["数字信号处理"],
+  // },
   {
     name: "有向图（关系）绘制器",
     path: "directed_graph_drawer",
     description: "可以用于快速绘制关系，链表",
     tags: ["数学"],
   },
+  {
+    name: "C语言类型解释",
+    path: "c_type_declaration_explanation",
+    compo_path: "pl/c_type_declaration_explanation",
+    description: "通过自然语言解释C语言的类型声明。",
+    tags: ["C语言", "类型"]
+  }
   // {
   //   name: "快速文本格式化",
   //   path: "quick_text_fmt",
@@ -341,7 +356,7 @@ function cut_tree_with_no_children(tree: RenderTagTreeNode) {
     }
   }
   if (no_page && tree.page_children.length === 0) return true;
-  return false
+  return false;
 }
 
 /** 合并处理过的标签树。所有页面只会出现一次。添加了“全部”标签，包含所有未隐藏的页面 */
@@ -357,14 +372,14 @@ export const render_tag_tree = (() => {
         name: "全部",
         node_children: [],
         page_children: unhidden_pages,
-        ref: tag_tree
+        ref: tag_tree,
       },
       {
         type: "node",
         name: "最近访问",
         node_children: [],
         page_children: [],
-      }
+      },
     ],
     page_children: [],
   });

@@ -234,7 +234,7 @@ async function update_ffmpeg_file(f?: File) {
   } catch (err) {
     show_warning_dialog(
       "发生了错误",
-      "可能是 ffmpeg.wasm 不支持该格式。详情请查看 ffmpeg 日志。"
+      "在尝试将文件转换为WAV格式时发生了错误，可能是 ffmpeg.wasm 不支持该格式。详情请查看 ffmpeg 日志。"
     );
   }
 }

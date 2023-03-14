@@ -4,10 +4,11 @@ import type { Ref } from "vue";
 import katex from "katex";
 import "katex/dist/katex.min.css";
 
-import { ID, incrementIDGeneratorFactory } from "../lib/common/id";
+import { incrementIDGeneratorFactory } from "../lib/common/id";
+import type { ID } from "../lib/common/id";
 import RelationMap from "../lib/common/relation_map";
-import { IRelation } from "../lib/common/relation";
-import { IEntity } from "../lib/common/entity";
+import type { IRelation } from "../lib/common/relation";
+import type { IEntity } from "../lib/common/entity";
 
 interface INode extends IEntity {
   name?: string;
@@ -71,7 +72,7 @@ const relation_map_reflexive_state = computed(() => {
 
   let counter = 0;
   for (const [id, [_, as_target]] of relation_map.entries()) {
-    counter += (as_target.has(id) ? 1 : 0);
+    counter += as_target.has(id) ? 1 : 0;
   }
 
   if (counter === node_counter.value) return Reflexive.All;
@@ -140,7 +141,7 @@ function add_relation(relation: IRelation<number>) {
 function build_total_order_relation() {
   for (const a of Object.values(node_map.value)) {
     for (const b of Object.values(node_map.value)) {
-      add_relation({src: a.id, target: b.id})
+      add_relation({ src: a.id, target: b.id });
     }
   }
 }
@@ -165,7 +166,7 @@ onMounted(() => {
 function clear_canvas() {
   relation_map.clear();
   node_map.value = {};
-  node_counter.value = 0
+  node_counter.value = 0;
 }
 
 const stop_canvas_click_counter = ref(0);
@@ -303,11 +304,11 @@ function node_mouse_enter(node_id: number, event: MouseEvent) {
 const relation_distance = 4;
 let relation_angle = 0;
 
-const new_name = ref("")
+const new_name = ref("");
 </script>
 
 <template lang="pug">
-q-page.flex.flex-col.gap-4.p-2.w-full(ref="page")
+q-page.flex.flex-col.gap-4.p-4.w-full.bg-white(ref="page")
   .flex.flex-row.h-full.flex-nowrap
     .flex.flex-col.gap-2(style="min-width: 260px;max-width: 260px;")
       div(
