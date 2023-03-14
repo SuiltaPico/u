@@ -277,7 +277,7 @@ const coverted_ts_type = computed(() => {
         if (result)
           return compose_text(
             node.inside,
-            `UnMutable<${result?.groups!.inside}>`
+            `Ptr<UnMutable<${result?.groups!.inside}>>`
           );
       }
 
@@ -355,13 +355,13 @@ q-page.bg-white.w-full.max-w-6xl.fcol.items-center
     span
       span.bg-sky-600.text-neutral-100.p-2 TS
       span &nbsp;Decl
-  div(class="min-h-[64px] ")
+  div(class="min-h-[64px]")
   div.fcol.font-code.text-3xl.items-center.justify-center.select-none.w-full.gap-4.select-text
     q-input.text-xl.bg-neutral-150(
-      class="w-[80%]"
+      class="w-[80%] max-sm:text-lg"
       label="类C类型" filled
       v-model="input_value")
-    div.text-xl(class="ts_type_result w-[80%] frow flex-wrap" v-html="coverted_ts_type_html")
+    div.text-xl(class="ts_type_result w-[80%] frow flex-wrap max-sm:text-lg" v-html="coverted_ts_type_html")
 </template>
 
 <style>
