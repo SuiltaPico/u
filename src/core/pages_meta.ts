@@ -1,33 +1,6 @@
 import Page, { RawPage, RawPage_to_Page } from "../lib/page";
 import Tag, { TagTreeNode } from "../lib/tag";
 
-const raw_tag_icon_map: {
-  [tag_name: string]: string | { name: string; scaling: number };
-} = {
-  全部: "mdi-creation",
-  最近访问: "mdi-history",
-  文件: { name: "mdi-file-multiple", scaling: 0.85 },
-  数学: "mdi-android-studio",
-  随机: "mdi-dice-multiple-outline",
-  数字信号处理: "mdi-waveform",
-  未分组: "mdi-help-box",
-  编码: "mdi-numeric-0-box-multiple",
-};
-
-export const tag_icon_map = (() => {
-  const result: {
-    [tag_name: string]: { name: string; scaling: number };
-  } = {};
-  Object.entries(raw_tag_icon_map).forEach(([name, value]) => {
-    if (typeof value === "string") {
-      result[name] = { name: value, scaling: 1 };
-      return;
-    }
-    result[name] = value;
-  });
-  return result;
-})();
-
 export const tag_relations: [tag_name: string, parents: string | string[]][] = [
   ["PDF", "文档"],
   ["文档", "文件"],
@@ -133,12 +106,18 @@ export const raw_pages: RawPage[] = [
     compo_path: "pl/c_type_declaration_explanation",
     description: "通过自然语言解释C语言的类型声明。",
     tags: ["C语言", "类型"]
-  }
+  },
   // {
   //   name: "快速文本格式化",
   //   path: "quick_text_fmt",
   //   description: "让文本快速格式化成你想要的样子。",
   // },
+  {
+    name: "同形字转换",
+    path: "homoglyphs",
+    compo_path: "unicode/homoglyphs",
+    tags: ["编码"]
+  }
 ];
 
 export const raw_pages_with_framework: RawPage[] = [

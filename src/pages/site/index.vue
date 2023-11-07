@@ -4,11 +4,11 @@ import { useRouter } from "vue-router";
 import { Observable, debounceTime } from "rxjs";
 
 import {
-  tag_icon_map,
   search_pages,
   render_tag_tree,
   pages,
 } from "../../core/pages_meta";
+import { tag_icon_map } from "../../core/tag_icon_map";
 import type { RenderTagTreeNode } from "../../core/pages_meta";
 import type Page from "../../lib/page";
 import type { ItemsOfArray } from "../../lib/common/types_utils";

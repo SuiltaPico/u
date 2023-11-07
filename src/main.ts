@@ -15,6 +15,11 @@ import { createPinia } from "pinia";
 import "./style/main.css";
 import App from "./App.vue";
 
+// import MarkdownIt from "markdown-it";
+// const md = new MarkdownIt({
+//   html: false,
+// });
+
 const app = createApp(App);
 
 app.use(router);
